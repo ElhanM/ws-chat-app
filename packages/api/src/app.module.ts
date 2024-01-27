@@ -3,7 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { TodoModule } from './todo/todo.module';
-import { PrismaService } from './prisma.service';
+import { PrismaModule } from './prisma.module';
 
 @Module({
   imports: [
@@ -13,6 +13,9 @@ import { PrismaService } from './prisma.service';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),
+    // we use this prisma module to provide all other modules with the PrismaService
+    // so we do not have to provide it manually in each module
+    PrismaModule,
     TodoModule,
   ],
 })
