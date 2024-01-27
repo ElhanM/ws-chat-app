@@ -26,7 +26,7 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/graphql": "^12.0.11",
     "@nestjs/platform-express": "^10.0.0",
-    "@prisma/client": "5.8.1",
+    "@prisma/client": "^5.8.1",
     "@ws-chat-app/shared": "0.0.1",
     "apollo-server-express": "^3.13.0",
     "graphql": "^16.8.1",

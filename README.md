@@ -9,9 +9,10 @@ to run project locally:
 in root run: `yarn`
 
 Terminal 1:
-`sudo systemctl stop postgresql
+`sudo systemctl stop postgresql`
 `docker compose up`
 `npx prisma migrate dev --name test`
 `cd packages/api && yarn start:dev`
+`npx prisma studio`
 
 Terminal 2: `cd packages/app && yarn dev`
