@@ -1,4 +1,4 @@
-# ws-chat-
+# ws-chat-app
 
 run `nvm use` to use the correct node version
 
@@ -13,6 +13,7 @@ Terminal 1:
 `docker compose up`
 `npx prisma migrate dev --name test`
 `cd packages/api && yarn start:dev`
+`yarn start:dev:docker`
 `npx prisma studio`
 
 Terminal 2: `cd packages/app && yarn dev`

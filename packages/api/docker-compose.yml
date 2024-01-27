@@ -1,6 +1,7 @@
 version: '3'
 services:
   postgres:
+    container_name: ws-chat-app_postgres_db
     image: postgres
     restart: always
     env_file:
