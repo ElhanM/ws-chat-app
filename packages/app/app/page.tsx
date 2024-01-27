@@ -1,8 +1,8 @@
-import testHello from "@ws-chat-app/shared";
+import { log } from "@ws-chat-app/shared";
 import Image from "next/image";
 
 export default function Home() {
-  testHello();
+  log("Hello from app");
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

@@ -1,4 +1,5 @@
 {
+  "name": "@ws-chat-app/root",
   "private": true,
   "workspaces": [
     "packages/*"

@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import testHello from '@ws-chat-app/shared';
+import { log } from '@ws-chat-app/src';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  testHello();
+  log('HELLO WORLD');
   await app.listen(5000);
 }
 bootstrap();
