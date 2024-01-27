@@ -4,7 +4,7 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "dev": "tsc -w -p tsconfig.json"
+    "build:watch": "tsc -w -p tsconfig.json"
   },
   "keywords": [],
   "author": "",
