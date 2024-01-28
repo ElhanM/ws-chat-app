@@ -47,6 +47,6 @@ input UpdateTodoInput {
 }
 
 type User {
-  id: Int!
+  id: String!
   username: String!
 }

@@ -42,15 +42,12 @@ export class AuthService {
     // TODO: Implement unique constraint on username in database and remove this check
     const user = await this.usersService.findOne(signUpUserInput.username);
 
-    const hashedPassword = await bcrypt.hash(signUpUserInput.password, 10);
-
     if (user) {
       throw new Error('User already exists');
     }
 
     return this.usersService.create({
       ...signUpUserInput,
-      password: hashedPassword,
     });
   }
 }
