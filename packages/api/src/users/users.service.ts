@@ -7,19 +7,6 @@ import { PrismaService } from 'src/prisma.service';
 export class UsersService {
   constructor(private prismaService: PrismaService) {}
 
-  private readonly users = [
-    {
-      id: 1,
-      username: 'elco',
-      password: '$2b$10$yY8u9NJ1FrS07dvWKh9vzO04xA7b5yfXFxf.r1kY.9b1l44zX6kqS',
-    },
-    {
-      id: 2,
-      username: 'test',
-      password: '$2b$10$yY8u9NJ1FrS07dvWKh9vzO04xA7b5yfXFxf.r1kY.9b1l44zX6kqS',
-    },
-  ];
-
   async create(createUserInput: CreateUserInput) {
     const hashedPassword = await bcrypt.hash(createUserInput.password, 10);
 
@@ -34,10 +21,14 @@ export class UsersService {
   }
 
   findAll() {
-    return this.users;
+    return this.prismaService.user.findMany();
   }
 
   findOne(username: string) {
-    return this.users.find((user) => user.username === username);
+    return this.prismaService.user.findUnique({
+      where: {
+        username,
+      },
+    });
   }
 }

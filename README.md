@@ -15,5 +15,6 @@ Terminal 1:
 `cd packages/api && yarn start:dev`
 `yarn start:dev:docker`
 `npx prisma studio`
+`npx prisma db seed`
 
 Terminal 2: `cd packages/app && yarn dev`

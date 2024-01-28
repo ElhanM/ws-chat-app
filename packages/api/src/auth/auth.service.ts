@@ -4,6 +4,7 @@ import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { SignUpUserInput } from './dto/sign-up-user.input';
 import * as bcrypt from 'bcrypt';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -39,15 +40,23 @@ export class AuthService {
   }
 
   async signUp(signUpUserInput: SignUpUserInput) {
-    // TODO: Implement unique constraint on username in database and remove this check
-    const user = await this.usersService.findOne(signUpUserInput.username);
+    // TODO: Auto login after sign up
+    // TODO: httpOnly cookie?
+    try {
+      const createdUser = await this.usersService.create({
+        ...signUpUserInput,
+      });
 
-    if (user) {
-      throw new Error('User already exists');
+      return createdUser;
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new Error('A user with this username already exists.');
+      } else {
+        throw error;
+      }
     }
-
-    return this.usersService.create({
-      ...signUpUserInput,
-    });
   }
 }
