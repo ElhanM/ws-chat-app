@@ -15,4 +15,16 @@ model Todo {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
   title     String
+
+  @@map("todos")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  username  String   @unique
+  password  String
+
+  @@map("users")
 }

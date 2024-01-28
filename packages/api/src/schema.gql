@@ -6,15 +6,34 @@ input CreateTodoInput {
   title: String!
 }
 
+type LoginResponse {
+  accessToken: String!
+  user: User!
+}
+
+input LoginUserInput {
+  password: String!
+  username: String!
+}
+
 type Mutation {
   createTodo(createTodoInput: CreateTodoInput!): Todo!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
   removeTodo(id: Int!): Todo!
+  signUp(signUpUserInput: SignUpUserInput!): User!
   updateTodo(id: Int!, updateTodoInput: UpdateTodoInput!): Todo!
 }
 
 type Query {
   todo(id: Int!): Todo!
   todos: [Todo!]!
+  user(username: String!): User!
+  users: [User!]!
+}
+
+input SignUpUserInput {
+  password: String!
+  username: String!
 }
 
 type Todo {
@@ -25,4 +44,9 @@ type Todo {
 input UpdateTodoInput {
   id: Int!
   title: String
+}
+
+type User {
+  id: Int!
+  username: String!
 }
