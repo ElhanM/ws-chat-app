@@ -1,10 +1,4 @@
-import {
-  Logger,
-  UseFilters,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Logger, UseFilters, UseGuards } from '@nestjs/common';
 import {
   MessageBody,
   OnGatewayConnection,
@@ -19,7 +13,6 @@ import { WsCatchAllFilter } from 'src/exceptions/ws-catch-all-filter';
 import { SocketWithAuth } from 'src/types';
 import { GatewayGuard } from '../auth/gateway.guard';
 
-@UsePipes(new ValidationPipe())
 @UseFilters(new WsCatchAllFilter())
 @WebSocketGateway({ namespace: 'chats' })
 export class ChatGateway

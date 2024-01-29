@@ -1,11 +1,12 @@
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
+import { AuthExecutionContext } from 'src/types';
+import { User } from 'src/users/entities/user.entity';
 import { AuthService } from './auth.service';
 import { LoginResponse } from './dto/login-response';
-import { GqlAuthGuard } from './gql-auth.guard';
 import { LoginUserInput } from './dto/login-user.input';
 import { SignUpUserInput } from './dto/sign-up-user.input';
-import { User } from 'src/users/entities/user.entity';
+import { GqlAuthGuard } from './gql-auth.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -16,12 +17,14 @@ export class AuthResolver {
   async login(
     // loginUserInput cannot be removed, since it is used in GqlAuthGuard
     @Args('loginUserInput') loginUserInput: LoginUserInput,
-    @Context() context,
+    @Context() context: AuthExecutionContext,
   ) {
     return this.authService.login(context.user);
   }
 
   @Mutation(() => User)
+  // i have global pipes enabled, so this is not needed
+  // @UsePipes(new ValidationPipe())
   signUp(@Args('signUpUserInput') signUpUserInput: SignUpUserInput) {
     return this.authService.signUp(signUpUserInput);
   }
