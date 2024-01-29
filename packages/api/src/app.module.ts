@@ -7,6 +7,7 @@ import { PrismaModule } from './prisma.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { ChatGateway } from './chats/chat.gateway';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ConfigModule } from '@nestjs/config';
     // we use this prisma module to provide all other modules with the PrismaService
     // so we do not have to provide it manually in each module
     PrismaModule,
+    ChatGateway,
     TodoModule,
     UsersModule,
     AuthModule,
