@@ -13,15 +13,12 @@ export class GatewayGuard implements CanActivate {
   private readonly logger = new Logger(GatewayGuard.name);
   constructor(private readonly jwtService: JwtService) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    this.logger.debug('GatewayGuard canActivate()');
-
     // regular `Socket` from socket.io is probably sufficient
     const socket: SocketWithAuth = context.switchToWs().getClient();
 
     // for testing support, fallback to token header
-    // const token =
-    //   socket.handshake.auth.token || socket.handshake.headers['token'];
-    const token = false;
+    const token =
+      socket.handshake.auth.token || socket.handshake.headers['token'];
 
     if (!token) {
       this.logger.debug('No token provided');

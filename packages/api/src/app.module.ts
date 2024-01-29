@@ -8,6 +8,7 @@ import { ChatsModule } from './chats/chats.module';
 import { PrismaModule } from './prisma.module';
 import { TodoModule } from './todo/todo.module';
 import { UsersModule } from './users/users.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
