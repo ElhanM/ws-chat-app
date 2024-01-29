@@ -1,13 +1,13 @@
-import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
-import { TodoModule } from './todo/todo.module';
-import { PrismaModule } from './prisma.module';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ChatGateway } from './chats/chat.gateway';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
+import { ChatsModule } from './chats/chats.module';
+import { PrismaModule } from './prisma.module';
+import { TodoModule } from './todo/todo.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -21,10 +21,10 @@ import { ChatGateway } from './chats/chat.gateway';
     // we use this prisma module to provide all other modules with the PrismaService
     // so we do not have to provide it manually in each module
     PrismaModule,
-    ChatGateway,
+    AuthModule,
     TodoModule,
     UsersModule,
-    AuthModule,
+    ChatsModule,
   ],
 })
 export class AppModule {}

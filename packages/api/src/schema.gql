@@ -2,6 +2,16 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Chat {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateChatInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 input CreateTodoInput {
   title: String!
 }
@@ -17,14 +27,19 @@ input LoginUserInput {
 }
 
 type Mutation {
+  createChat(createChatInput: CreateChatInput!): Chat!
   createTodo(createTodoInput: CreateTodoInput!): Todo!
   login(loginUserInput: LoginUserInput!): LoginResponse!
+  removeChat(id: Int!): Chat!
   removeTodo(id: Int!): Todo!
   signUp(signUpUserInput: SignUpUserInput!): User!
+  updateChat(updateChatInput: UpdateChatInput!): Chat!
   updateTodo(id: Int!, updateTodoInput: UpdateTodoInput!): Todo!
 }
 
 type Query {
+  chat(id: Int!): Chat!
+  chats: [Chat!]!
   todo(id: Int!): Todo!
   todos: [Todo!]!
   user(username: String!): User!
@@ -39,6 +54,12 @@ input SignUpUserInput {
 type Todo {
   id: Int!
   title: String!
+}
+
+input UpdateChatInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input UpdateTodoInput {

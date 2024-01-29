@@ -10,7 +10,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       // These are the default values, but you can change them to whatever you want
       usernameField: 'username',
       passwordField: 'password',
-    }); // This is the default behavior, but it's required to call super() if you want to override the constructor
+    });
   }
 
   async validate(username: string, password: string): Promise<any> {

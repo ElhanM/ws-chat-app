@@ -36,6 +36,8 @@
     "@ws-chat-app/shared": "0.0.1",
     "apollo-server-express": "^3.13.0",
     "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
     "graphql": "^16.8.1",
     "graphql-tools": "^9.0.0",
     "passport": "^0.7.0",
