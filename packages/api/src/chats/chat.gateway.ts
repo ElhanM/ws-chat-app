@@ -15,13 +15,12 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Namespace, Server } from 'socket.io';
-import { GatewayGuard } from 'src/auth/gateway.guard';
 import { WsCatchAllFilter } from 'src/exceptions/ws-catch-all-filter';
 import { SocketWithAuth } from 'src/types';
+import { GatewayGuard } from '../auth/gateway.guard';
 
 @UsePipes(new ValidationPipe())
 @UseFilters(new WsCatchAllFilter())
-@UseGuards(GatewayGuard)
 @WebSocketGateway({ namespace: 'chats' })
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect

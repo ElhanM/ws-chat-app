@@ -15,6 +15,26 @@ export class GatewayGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     this.logger.debug('GatewayGuard canActivate()');
 
-    throw new WsUnauthorizedException('No token provided');
+    // regular `Socket` from socket.io is probably sufficient
+    const socket: SocketWithAuth = context.switchToWs().getClient();
+
+    // for testing support, fallback to token header
+    // const token =
+    //   socket.handshake.auth.token || socket.handshake.headers['token'];
+    const token = false;
+
+    if (!token) {
+      this.logger.debug('No token provided');
+      throw new WsUnauthorizedException('No token provided');
+    }
+
+    try {
+      const payload = this.jwtService.verify(token);
+      socket.userID = payload.sub;
+      socket.username = payload.username;
+      return true;
+    } catch {
+      throw new WsUnauthorizedException('Invalid token');
+    }
   }
 }
