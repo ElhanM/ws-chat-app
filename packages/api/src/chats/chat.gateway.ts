@@ -34,7 +34,7 @@ export class ChatGateway
     const sockets = this.io.sockets;
 
     this.logger.debug(
-      `Socket connected with userID: ${client.userID}, and username: "${client.username}"`,
+      `Socket connected with id: ${client.id}, and username: "${client.username}"`,
     );
 
     this.logger.log(`WS Client with ID: ${client.id} connected`);
@@ -47,7 +47,7 @@ export class ChatGateway
     const sockets = this.io.sockets;
 
     this.logger.debug(
-      `Socket connected with userID: ${client.userID}, and username: "${client.username}"`,
+      `Socket connected with id: ${client.id}, and username: "${client.username}"`,
     );
     this.logger.log(`Disconnected socket with ID: ${client.id}`);
     this.logger.debug(`Total connected clients: ${sockets.size}`);

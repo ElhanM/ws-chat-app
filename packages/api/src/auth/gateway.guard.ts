@@ -27,7 +27,7 @@ export class GatewayGuard implements CanActivate {
 
     try {
       const payload = this.jwtService.verify(token);
-      socket.userID = payload.sub;
+      socket.id = payload.sub;
       socket.username = payload.username;
       return true;
     } catch {

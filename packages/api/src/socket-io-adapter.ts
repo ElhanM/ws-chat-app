@@ -53,7 +53,7 @@ const createTokenMiddleware =
 
     try {
       const payload = jwtService.verify(token);
-      socket.userID = payload.sub;
+      socket.id = payload.sub;
       socket.username = payload.username;
       next();
     } catch {
