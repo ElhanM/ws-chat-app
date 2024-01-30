@@ -1,11 +1,30 @@
-import Image from "next/image";
+"use client";
+
 import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Input from "../atoms/Input";
 import Button from "../atoms/Button";
+import { loginSchema } from "@/validation/login";
 
-type Props = {};
+type FormData = {
+  email: string;
+  password: string;
+};
 
-const Login = (props: Props) => {
+const Login = () => {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: yupResolver(loginSchema),
+  });
+
+  const onSubmit = (data: FormData) => {
+    console.log(data);
+  };
+
   return (
     <section className="bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -14,21 +33,50 @@ const Login = (props: Props) => {
             <h1 className="text-xl font-bold leading-tight tracking-tight dark:text-white md:text-2xl">
               Sign in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
-              <Input
-                label="Your email"
-                type="email"
+            <form
+              className="space-y-4 md:space-y-6"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <Controller
                 name="email"
-                id="email"
-                placeholder="name@email.com"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    label="Your email"
+                    type="email"
+                    id="email"
+                    placeholder="name@email.com"
+                    {...field}
+                  />
+                )}
               />
-              <Input
-                label="Password"
-                type="password"
+              {errors.email && errors.email.message && (
+                <p className="text-sm text-red-500">
+                  {errors.email.message.charAt(0).toUpperCase() +
+                    errors.email.message.slice(1)}
+                </p>
+              )}
+              <Controller
                 name="password"
-                id="password"
-                placeholder="••••••••"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <Input
+                    label="Password"
+                    type="password"
+                    id="password"
+                    placeholder="••••••••"
+                    {...field}
+                  />
+                )}
               />
+              {errors.password && errors.password.message && (
+                <p className="text-sm text-red-500">
+                  {errors.password.message.charAt(0).toUpperCase() +
+                    errors.password.message.slice(1)}
+                </p>
+              )}
               <Button text="Sign in" type="submit" />
               <p className="text-sm font-light dark:text-gray-400">
                 Don&apos;t have an account yet?{" "}
