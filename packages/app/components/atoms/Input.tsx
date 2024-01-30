@@ -4,8 +4,7 @@ type InputProps = {
   label: string;
   type: string;
   name: string;
-  id: string;
-  placeholder: string;
+  placeholder?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 const Input: React.FC<InputProps> = ({
@@ -21,11 +20,11 @@ const Input: React.FC<InputProps> = ({
       {label}
     </label>
     <input
-      type={type}
       name={name}
-      id={id}
-      placeholder={placeholder}
+      placeholder={placeholder ?? ""}
       className="bg-gray-700 border border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 block w-full p-2.5 rounded-lg"
+      type={type}
+      autoComplete="off"
       {...rest}
     />
   </div>
