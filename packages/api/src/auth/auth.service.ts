@@ -44,14 +44,12 @@ export class AuthService {
   }
 
   async signUp(signUpUserInput: SignUpUserInput) {
-    // TODO: Auto login after sign up
-    // TODO: httpOnly cookie?
+    let createdUser: User;
+
     try {
-      const createdUser = await this.usersService.create({
+      createdUser = await this.usersService.create({
         ...signUpUserInput,
       });
-
-      return createdUser;
     } catch (error) {
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -61,6 +59,12 @@ export class AuthService {
       } else {
         throw error;
       }
+    }
+
+    try {
+      return this.login(createdUser);
+    } catch (error) {
+      throw new Error('Login failed after sign up.');
     }
   }
 }

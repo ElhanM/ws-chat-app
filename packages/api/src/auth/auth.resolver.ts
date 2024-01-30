@@ -22,7 +22,8 @@ export class AuthResolver {
     return this.authService.login(context.user);
   }
 
-  @Mutation(() => User)
+  // we automatically log in the user after sign up, so this also returns a LoginResponse
+  @Mutation(() => LoginResponse)
   // i have global pipes enabled, so this is not needed
   // @UsePipes(new ValidationPipe())
   signUp(@Args('signUpUserInput') signUpUserInput: SignUpUserInput) {

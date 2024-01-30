@@ -32,7 +32,7 @@ type Mutation {
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeChat(id: Int!): Chat!
   removeTodo(id: Int!): Todo!
-  signUp(signUpUserInput: SignUpUserInput!): User!
+  signUp(signUpUserInput: SignUpUserInput!): LoginResponse!
   updateChat(updateChatInput: UpdateChatInput!): Chat!
   updateTodo(id: Int!, updateTodoInput: UpdateTodoInput!): Todo!
 }
