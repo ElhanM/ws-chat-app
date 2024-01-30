@@ -1,5 +1,4 @@
 "use client";
-
 import { LoginFormData } from "@/types/login";
 import { loginSchema } from "@/validation/login";
 import { yupResolver } from "@hookform/resolvers/yup";
