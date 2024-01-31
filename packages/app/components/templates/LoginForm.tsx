@@ -2,7 +2,7 @@
 import { LoginFormData } from "@/types/login";
 import { loginSchema } from "@/validation/login";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Button from "../atoms/Button";
 import ControlledInput from "../molecules/ControlledInput";
 import FormWrapper from "../organisms/FormWrapper";
@@ -14,8 +14,6 @@ const LoginForm = (props: Props) => {
     mode: "onChange",
     resolver: yupResolver(loginSchema),
   });
-
-  const { handleSubmit } = methods;
 
   const onSubmit = (data: LoginFormData) => {
     console.log(data);
