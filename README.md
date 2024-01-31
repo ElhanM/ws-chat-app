@@ -27,4 +27,5 @@ Terminal 1:
 `npx prisma db push`
 
 Terminal 2:
+
 `cd packages/app && yarn dev`

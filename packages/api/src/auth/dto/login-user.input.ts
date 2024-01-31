@@ -4,8 +4,6 @@ import { Transform } from 'class-transformer';
 
 @InputType()
 export class LoginUserInput {
-  // TODO: Add these constraints to prisma models
-  // TODO: make usernames no spaces
   @Field()
   @IsString()
   @MinLength(4)
