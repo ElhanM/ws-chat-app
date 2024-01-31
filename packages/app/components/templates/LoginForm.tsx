@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, useForm } from "react-hook-form";
 import Button from "../atoms/Button";
 import ControlledInput from "../molecules/ControlledInput";
+import FormWrapper from "../organisms/FormWrapper";
 
 type Props = {};
 
@@ -21,35 +22,30 @@ const LoginForm = (props: Props) => {
   };
 
   return (
-    <FormProvider {...methods}>
-      <form
-        className="space-y-4 md:space-y-6"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <ControlledInput<LoginFormData>
-          name="username"
-          label="Username"
-          type="text"
-          placeholder="john.doe"
-        />
-        <ControlledInput<LoginFormData>
-          name="password"
-          label="Password"
-          type="password"
-          placeholder="••••••••"
-        />
-        <Button text="Sign in" type="submit" />
-        <p className="text-sm font-light dark:text-gray-400">
-          Don&apos;t have an account yet?{" "}
-          <a
-            href="#"
-            className="font-medium dark:text-primary-500 hover:underline"
-          >
-            Sign up
-          </a>
-        </p>
-      </form>
-    </FormProvider>
+    <FormWrapper<LoginFormData> methods={methods} onSubmit={onSubmit}>
+      <ControlledInput<LoginFormData>
+        name="username"
+        label="Username"
+        type="text"
+        placeholder="john.doe"
+      />
+      <ControlledInput<LoginFormData>
+        name="password"
+        label="Password"
+        type="password"
+        placeholder="••••••••"
+      />
+      <Button text="Sign in" type="submit" />
+      <p className="text-sm font-light dark:text-gray-400">
+        Don&apos;t have an account yet?{" "}
+        <a
+          href="#"
+          className="font-medium dark:text-primary-500 hover:underline"
+        >
+          Sign up
+        </a>
+      </p>
+    </FormWrapper>
   );
 };
 

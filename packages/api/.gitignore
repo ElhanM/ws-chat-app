@@ -36,3 +36,7 @@ lerna-debug.log*
 
 # ignore migrations folder in prisma
 /prisma/migrations
+
+# ignore .env file
+.env
+**/.env
