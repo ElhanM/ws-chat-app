@@ -1,11 +1,7 @@
 import { Request } from 'express';
 import { Socket } from 'socket.io';
 import { ExecutionContext } from '@nestjs/common';
-
-export type User = {
-  id: string;
-  username: string;
-};
+import { User } from '@ws-chat-app/src';
 
 export type AuthPayload = User;
 

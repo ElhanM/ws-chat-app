@@ -1,29 +1,32 @@
 "use client";
 import { LOGIN_MUTATION } from "@/graphql/loginMutation";
 import useMutation from "@/hooks/useCustomMutation";
+import { setCurrentUser } from "@/lib/features/users/currentUserSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { LoginFormData } from "@/types/login";
 import { loginSchema } from "@/validation/login";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { AuthUser } from "@ws-chat-app/shared";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../atoms/Button";
 import ControlledInput from "../molecules/ControlledInput";
 import FormWrapper from "../organisms/FormWrapper";
-import { setCurrentUser } from "@/lib/features/users/currentUserSlice";
 
 type Props = {};
 
 const LoginForm = (props: Props) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.currentUser);
+  const currentUser = useAppSelector((state) => state.currentUser);
 
   const methods = useForm<LoginFormData>({
     mode: "onChange",
     resolver: yupResolver(loginSchema),
   });
 
-  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION, {
+  const [login, { data, loading, error }] = useMutation<{
+    login: AuthUser;
+  }>(LOGIN_MUTATION, {
     onCompleted: (data) => {
       console.log({ data });
       dispatch(setCurrentUser(data.login));
@@ -31,8 +34,8 @@ const LoginForm = (props: Props) => {
   });
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    console.log(currentUser);
+  }, [currentUser]);
 
   const onSubmit = (data: LoginFormData) => {
     login({ variables: { input: data } });
