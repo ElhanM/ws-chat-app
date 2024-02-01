@@ -10,17 +10,20 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const logger = new Logger('Main (main.ts)');
 
-  const clientPort = parseInt(configService.get('CLIENT_PORT')) || 3000;
   const port = parseInt(configService.get('PORT')) || 5000;
 
   app.useGlobalPipes(new ValidationPipe());
 
   app.enableCors({
-    origin: [
-      `http://localhost:${clientPort}`,
-      new RegExp(`/^http:\/\/localhost:.*/`),
-      new RegExp(`/^http:\/\/192\.168\.1\.([1-9]|[1-9]\d):${clientPort}$/`),
-    ],
+    origin: (origin, callback) => {
+      const localhostRegex = /^http:\/\/localhost:\d+$/;
+      const ipRegex = /^http:\/\/192\.168\.1\.([1-9]|[1-9]\d)$/;
+      if (localhostRegex.test(origin) || ipRegex.test(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
   });
 
   app.useWebSocketAdapter(new SocketIOAdapter(app, configService));

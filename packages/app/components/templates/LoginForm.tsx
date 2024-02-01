@@ -1,18 +1,23 @@
 "use client";
 import { LOGIN_MUTATION } from "@/graphql/loginMutation";
 import useMutation from "@/hooks/useCustomMutation";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { LoginFormData } from "@/types/login";
 import { loginSchema } from "@/validation/login";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../atoms/Button";
 import ControlledInput from "../molecules/ControlledInput";
 import FormWrapper from "../organisms/FormWrapper";
-import { ToastContainer, toast } from "react-toastify";
+import { setCurrentUser } from "@/lib/features/users/currentUserSlice";
 
 type Props = {};
 
 const LoginForm = (props: Props) => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.currentUser);
+
   const methods = useForm<LoginFormData>({
     mode: "onChange",
     resolver: yupResolver(loginSchema),
@@ -21,8 +26,13 @@ const LoginForm = (props: Props) => {
   const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
       console.log({ data });
+      dispatch(setCurrentUser(data.login));
     },
   });
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   const onSubmit = (data: LoginFormData) => {
     login({ variables: { input: data } });
