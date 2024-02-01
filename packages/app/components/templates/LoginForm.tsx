@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import Button from "../atoms/Button";
 import ControlledInput from "../molecules/ControlledInput";
 import FormWrapper from "../organisms/FormWrapper";
+import { ToastContainer, toast } from "react-toastify";
 
 type Props = {};
 
@@ -17,7 +18,11 @@ const LoginForm = (props: Props) => {
     resolver: yupResolver(loginSchema),
   });
 
-  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
+  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION, {
+    onCompleted: (data) => {
+      console.log({ data });
+    },
+  });
 
   const onSubmit = (data: LoginFormData) => {
     login({ variables: { input: data } });
@@ -28,11 +33,7 @@ const LoginForm = (props: Props) => {
   }
 
   if (error) {
-    console.error(error);
-  }
-
-  if (data) {
-    console.log({ data });
+    console.log({ error });
   }
 
   return (
