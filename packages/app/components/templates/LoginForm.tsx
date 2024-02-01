@@ -1,4 +1,6 @@
 "use client";
+import { LOGIN_MUTATION } from "@/graphql/loginMutation";
+import useMutation from "@/hooks/useCustomMutation";
 import { LoginFormData } from "@/types/login";
 import { loginSchema } from "@/validation/login";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,9 +17,23 @@ const LoginForm = (props: Props) => {
     resolver: yupResolver(loginSchema),
   });
 
+  const [login, { data, loading, error }] = useMutation(LOGIN_MUTATION);
+
   const onSubmit = (data: LoginFormData) => {
-    console.log(data);
+    login({ variables: { input: data } });
   };
+
+  if (loading) {
+    console.log("Loading...");
+  }
+
+  if (error) {
+    console.error(error);
+  }
+
+  if (data) {
+    console.log({ data });
+  }
 
   return (
     <FormWrapper<LoginFormData> methods={methods} onSubmit={onSubmit}>

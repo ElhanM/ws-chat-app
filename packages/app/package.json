@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.9.1",
     "@hookform/resolvers": "^3.3.4",
     "@ws-chat-app/shared": "0.0.1",
+    "graphql": "^16.8.1",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",

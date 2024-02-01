@@ -1,8 +1,18 @@
+"use client";
+import { GET_TODOS } from "@/graphql/getTodos";
+import useQuery from "@/hooks/useCustomQuery";
 import { log } from "@ws-chat-app/shared";
 import Image from "next/image";
 
 export default function Home() {
   log("Hello from app");
+
+  const { loading, error, data } = useQuery(GET_TODOS);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error</p>;
+
+  console.log({ data });
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
