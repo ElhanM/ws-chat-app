@@ -1,7 +1,10 @@
 "use client";
 import { LOGIN_MUTATION } from "@/graphql/loginMutation";
 import useMutation from "@/hooks/useCustomMutation";
-import { setCurrentUser } from "@/lib/features/users/currentUserSlice";
+import {
+  addTokenToLocalStorage,
+  setCurrentUser,
+} from "@/lib/features/users/currentUserSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { LoginFormData } from "@/types/login";
 import { loginSchema } from "@/validation/login";
@@ -12,6 +15,7 @@ import { useForm } from "react-hook-form";
 import Button from "../atoms/Button";
 import ControlledInput from "../molecules/ControlledInput";
 import FormWrapper from "../organisms/FormWrapper";
+import { redirect } from "next/navigation";
 
 type Props = {};
 
@@ -30,12 +34,24 @@ const LoginForm = (props: Props) => {
     onCompleted: (data) => {
       console.log({ data });
       dispatch(setCurrentUser(data.login));
+      dispatch(addTokenToLocalStorage(data.login.accessToken));
+      // redirect("/chats");
     },
   });
 
   useEffect(() => {
     console.log(currentUser);
   }, [currentUser]);
+
+  useEffect(() => {
+    let token = localStorage.getItem(
+      process.env.NEXT_PUBLIC_TOKEN_KEY || "token"
+    );
+
+    if (token) {
+      redirect("/chats");
+    }
+  }, []);
 
   const onSubmit = (data: LoginFormData) => {
     login({ variables: { input: data } });

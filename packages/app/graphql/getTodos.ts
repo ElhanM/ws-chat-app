@@ -6,5 +6,9 @@ export const GET_TODOS = gql`
       id
       title
     }
+    users {
+      id
+      username
+    }
   }
 `;

@@ -15,15 +15,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   app.enableCors({
-    origin: (origin, callback) => {
-      const localhostRegex = /^http:\/\/localhost:\d+$/;
-      const ipRegex = /^http:\/\/192\.168\.1\.([1-9]|[1-9]\d)$/;
-      if (localhostRegex.test(origin) || ipRegex.test(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    // allow all localhost ports and all 192.168.1.x ports
+    origin: [/http:\/\/localhost:\d+/, /http:\/\/192.168.1.\d+:\d+/],
   });
 
   app.useWebSocketAdapter(new SocketIOAdapter(app, configService));
