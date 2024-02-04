@@ -11,6 +11,15 @@ const Login = () => {
               Sign in to your account
             </h1>
             <LoginForm />
+            <p className="text-sm font-light dark:text-gray-400 !mt-3">
+              Don&apos;t have an account yet?{" "}
+              <a
+                href="#"
+                className="font-medium dark:text-primary-500 hover:underline"
+              >
+                Sign up
+              </a>
+            </p>
           </div>
         </div>
       </div>

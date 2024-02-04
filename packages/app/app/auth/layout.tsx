@@ -1,3 +1,4 @@
+import LoginGuard from "@/components/atoms/LoginGuard";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function RootLayout({
@@ -5,5 +6,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return (
+    <>
+      <LoginGuard />
+      {children}
+    </>
+  );
 }

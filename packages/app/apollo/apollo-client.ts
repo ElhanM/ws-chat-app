@@ -1,6 +1,10 @@
+import jwtDecode from "@/utils/jwtDecode";
+import {
+  getTokenFromLocalStorage,
+  removeTokenFromLocalStorage,
+} from "@/utils/localStorage";
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { JwtPayload, jwtDecode } from "jwt-decode";
 // import { redirect } from "next/navigation";
 
 const httpLink = createHttpLink({
@@ -9,17 +13,13 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  let token = localStorage.getItem(
-    process.env.NEXT_PUBLIC_TOKEN_KEY || "token"
-  );
+  let token = getTokenFromLocalStorage();
 
   if (token) {
-    let decodedToken: JwtPayload & {
-      username: string;
-    } = jwtDecode(token);
+    let decodedToken = jwtDecode(token);
 
     if (!decodedToken.exp || !decodedToken.sub) {
-      localStorage.removeItem(process.env.NEXT_PUBLIC_TOKEN_KEY || "token");
+      removeTokenFromLocalStorage();
       // redirect from next/navigation is not available in this file
       // so we will use window.location.href
       window.location.href = "/auth/login";
@@ -33,7 +33,7 @@ const authLink = setContext((_, { headers }) => {
     let currentDate = new Date();
 
     if (decodedToken.exp * 1000 < currentDate.getTime()) {
-      localStorage.removeItem(process.env.NEXT_PUBLIC_TOKEN_KEY || "token");
+      removeTokenFromLocalStorage();
       window.location.href = "/auth/login";
       return {
         headers: {

@@ -1,13 +1,21 @@
 "use client";
 import { GET_TODOS } from "@/graphql/getTodos";
 import useQuery from "@/hooks/useCustomQuery";
+import { useAppSelector } from "@/lib/hooks";
 import { log } from "@ws-chat-app/shared";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export default function Home() {
   log("Hello from app");
 
   const { loading, error, data, refetch } = useQuery(GET_TODOS);
+
+  const currentUser = useAppSelector((state) => state.currentUser);
+
+  useEffect(() => {
+    console.log(currentUser);
+  }, [currentUser]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;
