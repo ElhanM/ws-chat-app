@@ -1,31 +1,77 @@
-# ws-chat-app
+# WS Chat App -> Under Development
 
-run `nvm use` to use the correct node version
+WS Chat App is a chat application built with NestJS, Next.js, and TypeScript.
 
-front end installed with `npx create-next-app@latest`
-back end installed with `nest new api`
+## Technial Details
 
-to run project locally:
-in root run: `yarn`
+This project is a monorepo managed with yarn workspaces. The backend is built with NestJS and uses Prisma as an ORM.
 
-Terminal 1:
+The backend of the application is built with NestJS and uses Prisma as an ORM. The frontend is built with Next.js and uses Apollo Client to communicate with the backend. The communication between the frontend and the backend is done using a GraphQL API. The database I decided to use is PostgresSQL.
 
-`sudo systemctl stop postgresql`
+The database is run inside of a docker container.
 
-`docker compose up`
+During development, I used a TDD (Test Driven Development) approach to build the app.
 
-`npx prisma migrate dev --name test`
+The most interesting part of the project is the chat feature, that uses websockets to allow real-time communication between users. I used Socket.io to achieve this.
 
-`cd packages/api && yarn start:dev`
+## Packages
 
-`yarn start:dev:docker`
+The project is organized into multiple packages:
 
-`npx prisma studio`
+- `@ws-chat-app/api`: This is the backend of the application, built with NestJS.Located in: packages/api
+- `@ws-chat-app/app`: This is the frontend of the application, built with Next.js. Located in: packages/app
+- `@ws-chat-app/shared`: This package contains shared TypeScript types and utilities. Located in: packages/shared
 
-`npx prisma db seed`
+## Getting Started
 
-`npx prisma db push`
+First of all, this project is mean to be run with Node.js version 20.x. You can use `nvm` to manage your Node.js versions. Simpy run `nvm use` in your terminal to use the correct version.
 
-Terminal 2:
+To get started with the project, you first need to install all the dependencies. Since this project uses yarn workspaces, you can do this by running `yarn` at the root of the project.
 
-`cd packages/app && yarn dev`
+How to run api:
+
+First, go to the api package
+
+```bash
+cd packages/api
+```
+
+In order to run the api, you first need to run the docker-compose.yaml file to start a postgres database.
+
+```bash
+sudo systemctl stop postgresql # if you have postgres running locally stop it
+
+docker compose up
+```
+
+Then, you can use prisma to create and seed the database:
+
+```bash
+npx prisma db push
+
+npx prisma db seed
+```
+
+Now you are ready to run the server:
+
+```bash
+yarn start:dev
+```
+
+PS, you can run prisma migrations using:
+
+```bash
+npx prisma migrate dev --name test
+```
+
+And you can run prisma studio using:
+
+```bash
+npx prisma studio
+```
+
+How to run app:
+
+```bash
+cd packages/app && yarn dev
+```
