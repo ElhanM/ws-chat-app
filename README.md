@@ -75,3 +75,5 @@ How to run app:
 ```bash
 cd packages/app && yarn dev
 ```
+
+### You do not need to run the shared folder.

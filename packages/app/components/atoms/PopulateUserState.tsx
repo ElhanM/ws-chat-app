@@ -7,12 +7,13 @@ import {
   getTokenFromLocalStorage,
   removeTokenFromLocalStorage,
 } from "@/utils/localStorage";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 type Props = {};
 
 const PopulateUserState = (props: Props) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
 
   const validateToken = (decodedToken: DecodedToken) => {
@@ -20,13 +21,15 @@ const PopulateUserState = (props: Props) => {
 
     if (!decodedToken.exp || !decodedToken.sub) {
       removeTokenFromLocalStorage();
-      redirect("/auth/login");
+      router.push("/auth/login");
+      return;
     }
 
     // JWT exp is in seconds
     if (decodedToken.exp * 1000 < currentDate.getTime()) {
       removeTokenFromLocalStorage();
-      redirect("/auth/login");
+      router.push("/auth/login");
+      return;
     }
 
     return true;
@@ -35,7 +38,8 @@ const PopulateUserState = (props: Props) => {
   const dispatchUser = (decodedToken: DecodedToken) => {
     if (!decodedToken.sub || !decodedToken.username) {
       removeTokenFromLocalStorage();
-      redirect("/auth/login");
+      router.push("/auth/login");
+      return;
     }
 
     dispatch(
@@ -54,7 +58,8 @@ const PopulateUserState = (props: Props) => {
     let token = getTokenFromLocalStorage();
 
     if (!token) {
-      redirect("/auth/login");
+      router.push("/auth/login");
+      return;
     } else {
       let decodedToken = jwtDecode(token);
 

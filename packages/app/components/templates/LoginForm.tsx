@@ -5,13 +5,12 @@ import {
   addTokenToLocalStorage,
   setCurrentUser,
 } from "@/lib/features/users/currentUserSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/hooks";
 import { LoginFormData } from "@/types/login";
 import { loginSchema } from "@/validation/login";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AuthUser } from "@ws-chat-app/shared";
-import { redirect } from "next/navigation";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Button from "../atoms/Button";
 import ControlledInput from "../molecules/ControlledInput";
@@ -21,6 +20,7 @@ type Props = {};
 
 const LoginForm = (props: Props) => {
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const methods = useForm<LoginFormData>({
     mode: "onChange",
@@ -34,9 +34,15 @@ const LoginForm = (props: Props) => {
       console.log({ data });
       dispatch(setCurrentUser(data.login));
       dispatch(addTokenToLocalStorage(data.login.accessToken));
-      // we can not use redirect here either
-      // this probably happens since i made a custom wrapper for useMutation
-      window.location.href = "/chats";
+      // https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#redirect-function
+      /* 
+        There are four ways to navigate between routes in Next.js:
+        Using the <Link> Component
+        Using the useRouter hook (Client Components)
+        Using the redirect function (Server Components)
+        Using the native History API
+      */
+      router.push("/chats");
     },
   });
 

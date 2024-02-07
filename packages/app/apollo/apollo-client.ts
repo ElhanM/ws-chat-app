@@ -22,6 +22,7 @@ const authLink = setContext((_, { headers }) => {
       removeTokenFromLocalStorage();
       // redirect from next/navigation is not available in this file
       // so we will use window.location.href
+      // TODO: is there any better way to do this? without using window.location.href
       window.location.href = "/auth/login";
       return {
         headers: {

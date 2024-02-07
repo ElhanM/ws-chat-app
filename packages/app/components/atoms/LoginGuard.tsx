@@ -4,12 +4,14 @@ import {
   getTokenFromLocalStorage,
   removeTokenFromLocalStorage,
 } from "@/utils/localStorage";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 type Props = {};
 
 const LoginGuard = (props: Props) => {
+  const router = useRouter();
+
   useEffect(() => {
     let token = getTokenFromLocalStorage();
 
@@ -28,7 +30,7 @@ const LoginGuard = (props: Props) => {
         return;
       }
 
-      redirect("/chats");
+      router.push("/chats");
     }
   }, []);
 
