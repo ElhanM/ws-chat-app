@@ -7,6 +7,7 @@ type InputProps = {
   placeholder?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
+// we need a ref here because otherwise Jest complains during testing
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ label, type, name, id, placeholder, ...rest }, ref) => (
     <div className="w-full max-w-md">

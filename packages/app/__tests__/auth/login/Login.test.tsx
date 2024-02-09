@@ -2,8 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
-import Page from "../../../app/auth/login/page";
-import currentUserReducer from "../../../lib/features/users/currentUserSlice";
+import Page from "@/app/auth/login/page";
+import currentUserReducer from "@/lib/features/users/currentUserSlice";
 
 jest.mock("@apollo/client", () => ({
   ...jest.requireActual("@apollo/client"),

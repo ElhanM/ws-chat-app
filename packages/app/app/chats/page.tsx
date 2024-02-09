@@ -1,10 +1,10 @@
-import Home from "@/components/pages/Home";
+import Chat from "@/components/pages/Chat";
 import React from "react";
 
 type Props = {};
 
-const HomePage = (props: Props) => {
-  return <Home />;
+const ChatPage = (props: Props) => {
+  return <Chat />;
 };
 
-export default HomePage;
+export default ChatPage;

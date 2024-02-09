@@ -16,7 +16,7 @@ async function bootstrap() {
 
   app.enableCors({
     // allow all localhost ports and all 192.168.1.x ports
-    origin: [/http:\/\/localhost:\d+/, /http:\/\/192.168.1.\d+:\d+/],
+    origin: [/http:\/\/localhost:\d+/, /http:\/\/192.168.\d+.\d+:\d+/],
   });
 
   app.useWebSocketAdapter(new SocketIOAdapter(app, configService));
