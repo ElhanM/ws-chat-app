@@ -34,6 +34,7 @@ const config: Config = {
         "send-button": "#008de9",
         "sent-message": "#3797f0",
         "incoming-message": "#262626",
+        "lighter-black": "#101010",
       },
       backgroundColor: {},
     },
