@@ -10,10 +10,10 @@ const MainChatArea = ({ messages }: Props) => {
   return (
     <>
       {/* Main Chat Area */}
-      <div className="flex-1 dark:bg-gray-900">
+      <div className="flex-1 bg-black">
         {/* Chat Header */}
-        <header className="bg-white p-4 text-gray-700 dark:bg-gray-800 dark:text-gray-200">
-          <h1 className="text-2xl font-semibold">Alice</h1>
+        <header className="p-4 bg-black dark:text-gray-200 border border-pale border-l-0">
+          <h1 className="text-2xl font-semibold bg-black">Alice</h1>
         </header>
 
         {/* Chat Messages */}
@@ -35,8 +35,10 @@ const MainChatArea = ({ messages }: Props) => {
                   />
                 </div>
               )}
-              <div className="flex max-w-96 bg-white rounded-lg p-3 gap-3">
-                <p className="text-gray-700">{message.text}</p>
+              <div
+                className={`flex max-w-96 rounded-lg p-3 gap-3 ${message.incoming ? "bg-incoming-message" : "bg-sent-message"}`}
+              >
+                <p className="text-white">{message.text}</p>
               </div>
               {!message.incoming && (
                 <div className="w-9 h-9 rounded-full flex items-center justify-center mr-2">
@@ -54,14 +56,14 @@ const MainChatArea = ({ messages }: Props) => {
         </div>
 
         {/* Chat Input */}
-        <footer className="bg-white border-t border-gray-300 p-4 absolute bottom-0 w-3/4 dark:bg-gray-800 dark:border-gray-700">
+        <footer className="p-4 absolute bottom-0 w-3/4 border border-pale bg-black border-l-0">
           <div className="flex items-center">
             <input
               type="text"
               placeholder="Type a message..."
-              className="w-full p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:focus:border-blue-500"
+              className="w-full p-2 border focus:outline-none text-gray-200 border-gray-600 bg-black rounded-2xl"
             />
-            <button className="bg-indigo-500 text-white px-4 py-2 rounded-md ml-2 dark:bg-indigo-400">
+            <button className="px-4 py-2 rounded-md ml-2 text-send-button bg-black font-semibold hover:text-white">
               Send
             </button>
           </div>
