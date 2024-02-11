@@ -3,7 +3,7 @@ import { getTokenFromLocalStorage } from "@/utils/localStorage";
 import React, { useEffect, useState, useRef } from "react";
 import io, { Socket } from "socket.io-client";
 
-const Chats = () => {
+const ChatDemo = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const socketRef = useRef<Socket | null>(null);
@@ -50,7 +50,7 @@ const Chats = () => {
 
   return (
     <div className="flex flex-col space-y-4 p-4">
-      <h1 className="text-2xl font-bold mb-4">Chats</h1>
+      <h1 className="text-2xl font-bold mb-4">ChatDemo</h1>
       {messages.map((message, index) => (
         <div
           key={index}
@@ -77,4 +77,4 @@ const Chats = () => {
   );
 };
 
-export default Chats;
+export default ChatDemo;
