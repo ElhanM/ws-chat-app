@@ -68,7 +68,7 @@ const Chats = () => {
   }, []);
 
   return (
-    <div className="flex h-screen overflow-hidden dark:bg-gray-800">
+    <div className="flex h-screen overflow-hidden bg-gray-800">
       <Sidebar
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}

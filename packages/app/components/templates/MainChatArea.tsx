@@ -12,7 +12,7 @@ const MainChatArea = ({ messages }: Props) => {
       {/* Main Chat Area */}
       <div className="flex-1 bg-black">
         {/* Chat Header */}
-        <header className="p-4 bg-black dark:text-gray-200 border border-pale border-l-0">
+        <header className="p-4 bg-black text-gray-200 border border-pale border-l-0">
           <h1 className="text-2xl font-semibold bg-black">Alice</h1>
         </header>
 

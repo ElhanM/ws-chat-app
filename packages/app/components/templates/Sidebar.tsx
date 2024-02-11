@@ -32,7 +32,7 @@ const Sidebar = ({ contacts, setIsMenuOpen, isMenuOpen }: Props) => {
             <div
               key={index}
               className={`flex items-center mb-4 cursor-pointer hover:bg-chat-hover p-2 rounded-md
-              ${index === 0 && "bg-selected-chat"}
+              ${index === 0 && "bg-selected-chat hover:bg-selected-chat"}
               `}
             >
               <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
