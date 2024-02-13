@@ -31,4 +31,14 @@ export class UsersService {
       },
     });
   }
+
+  getAllOtherUsers(currentUser) {
+    return this.prismaService.user.findMany({
+      where: {
+        NOT: {
+          id: currentUser.id,
+        },
+      },
+    });
+  }
 }

@@ -9,5 +9,10 @@ export type AuthExecutionContext = ExecutionContext & {
   user: User;
 };
 
+export type ContextWithAuth = {
+  // to avoid const user: Express.User & User
+  req: Omit<Request, 'user'> & { user: User };
+};
+
 export type RequestWithAuth = Request & AuthPayload;
 export type SocketWithAuth = Socket & AuthPayload;

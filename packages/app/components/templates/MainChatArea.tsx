@@ -2,11 +2,33 @@ import { Message } from "@/types/message";
 import Image from "next/image";
 import React from "react";
 
-type Props = {
-  messages: Message[];
-};
+type Props = {};
 
-const MainChatArea = ({ messages }: Props) => {
+const MainChatArea = ({}: Props) => {
+  const messages: Message[] = [
+    {
+      text: "Hey Bob, how's it going?",
+      sender: "Alice",
+      avatar:
+        "https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato",
+      incoming: true,
+    },
+    {
+      text: "Hey Alice, I'm doing great! How about you?",
+      sender: "Bob",
+      avatar:
+        "https://placehold.co/200x/ad922e/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato",
+      incoming: false,
+    },
+    {
+      text: "I'm doing good too. Thanks for asking!",
+      sender: "Alice",
+      avatar:
+        "https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato",
+      incoming: true,
+    },
+  ];
+
   return (
     <>
       {/* Main Chat Area */}

@@ -40,6 +40,7 @@ type Mutation {
 type Query {
   chat(id: Int!): Chat!
   chats: [Chat!]!
+  otherUsers: [User!]!
   todo(id: Int!): Todo!
   todos: [Todo!]!
   user(username: String!): User!
