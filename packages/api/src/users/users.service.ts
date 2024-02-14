@@ -3,6 +3,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma.service';
 import { User } from '@ws-chat-app/src';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -33,8 +34,9 @@ export class UsersService {
     });
   }
 
-  getAllOtherUsers(currentUser: User) {
+  getAllOtherUsers(currentUser: User, pagination: Prisma.UserFindManyArgs) {
     return this.prismaService.user.findMany({
+      ...pagination,
       where: {
         NOT: {
           id: currentUser.id,

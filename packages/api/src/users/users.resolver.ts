@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Context, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Int, Query, Resolver } from '@nestjs/graphql';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ContextWithAuth } from 'src/types';
 import { User } from './entities/user.entity';
@@ -22,9 +22,13 @@ export class UsersResolver {
 
   @Query(() => [User], { name: 'otherUsers' })
   @UseGuards(JwtAuthGuard)
-  getAllOtherUsers(@Context() context: ContextWithAuth) {
+  getAllOtherUsers(
+    @Context() context: ContextWithAuth,
+    @Args('skip', { type: () => Int, nullable: true }) skip: number,
+    @Args('take', { type: () => Int, nullable: true }) take: number,
+  ) {
     const user = context.req.user;
 
-    return this.usersService.getAllOtherUsers(user);
+    return this.usersService.getAllOtherUsers(user, { skip, take });
   }
 }

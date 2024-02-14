@@ -11,7 +11,9 @@ import { UserChats } from "@/types/userChats";
 type Props = {};
 
 const Sidebar = ({}: Props) => {
-  const { loading, error, data, refetch } = useQuery(GET_OTHER_USERS);
+  const { loading, error, data, refetch } = useQuery(GET_OTHER_USERS, {
+    variables: { skip: 0, take: 15 },
+  });
 
   const { currentUser } = useAppSelector((state) => state.currentUser);
 
