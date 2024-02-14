@@ -50,6 +50,12 @@ npx prisma db push
 npx prisma db seed
 ```
 
+You can also use prisma to wipe the database:
+
+```bash
+yarn prisma:reset
+```
+
 Now you are ready to run the server:
 
 ```bash

@@ -41,4 +41,8 @@ export class UsersService {
       },
     });
   }
+
+  deleteAllUsers() {
+    return this.prismaService.user.deleteMany();
+  }
 }
