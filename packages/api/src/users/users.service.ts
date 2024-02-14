@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma.service';
+import { User } from '@ws-chat-app/src';
 
 @Injectable()
 export class UsersService {
@@ -32,7 +33,7 @@ export class UsersService {
     });
   }
 
-  getAllOtherUsers(currentUser) {
+  getAllOtherUsers(currentUser: User) {
     return this.prismaService.user.findMany({
       where: {
         NOT: {
@@ -40,9 +41,5 @@ export class UsersService {
         },
       },
     });
-  }
-
-  deleteAllUsers() {
-    return this.prismaService.user.deleteMany();
   }
 }

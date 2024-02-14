@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export default [
   {
     id: '078d79f4-f4d9-4683-a564-f1d520ba37c1',
@@ -29,4 +31,9 @@ export default [
     username: 'test5',
     password: '1234',
   },
+  ...Array.from({ length: 20 }, (v, i) => ({
+    id: uuidv4(),
+    username: `user${i + 6}`,
+    password: '1234',
+  })),
 ];

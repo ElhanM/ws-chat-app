@@ -1,10 +1,9 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Query, Resolver } from '@nestjs/graphql';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ContextWithAuth } from 'src/types';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
-import { IncomingMessage } from 'http';
-import { ContextWithAuth } from 'src/types';
 
 @Resolver(() => User)
 export class UsersResolver {
