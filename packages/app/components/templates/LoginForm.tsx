@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import Button from "../atoms/Button";
 import ControlledInput from "../molecules/ControlledInput";
 import FormWrapper from "../organisms/FormWrapper";
+import Loader from "../atoms/Loader";
 
 type Props = {};
 
@@ -51,7 +52,7 @@ const LoginForm = (props: Props) => {
   };
 
   if (loading) {
-    console.log("Loading...");
+    return <Loader />;
   }
 
   if (error) {

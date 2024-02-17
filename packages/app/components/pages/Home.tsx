@@ -5,6 +5,8 @@ import { useAppSelector } from "@/lib/hooks";
 import { log } from "@ws-chat-app/shared";
 import Image from "next/image";
 import { useEffect } from "react";
+import Loader from "../atoms/Loader";
+import Error from "../atoms/Error";
 
 export default function Home() {
   log("Hello from app");
@@ -17,8 +19,8 @@ export default function Home() {
     console.log(currentUser);
   }, [currentUser]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading) return <Loader />;
+  if (error) return <Error message={error.message} />;
 
   console.log({ data });
 
