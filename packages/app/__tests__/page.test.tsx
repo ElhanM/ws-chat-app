@@ -1,13 +1,15 @@
-import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import React from "react";
+import { render } from "@testing-library/react";
 import Page from "../app/page";
+import { redirect } from "next/navigation";
 
-describe("Page", () => {
-  it("renders a heading", () => {
+jest.mock("next/navigation", () => ({
+  redirect: jest.fn(),
+}));
+
+describe("Home", () => {
+  it("redirects to /chats when rendered", () => {
     render(<Page />);
-
-    const heading = screen.getByRole("heading", { level: 1 });
-
-    expect(heading).toBeInTheDocument();
+    expect(redirect).toHaveBeenCalledWith("/chats");
   });
 });

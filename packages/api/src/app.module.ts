@@ -6,9 +6,7 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { ChatsModule } from './chats/chats.module';
 import { PrismaModule } from './prisma.module';
-import { TodoModule } from './todo/todo.module';
 import { UsersModule } from './users/users.module';
-import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -23,7 +21,6 @@ import { JwtModule } from '@nestjs/jwt';
     // so we do not have to provide it manually in each module
     PrismaModule,
     AuthModule,
-    TodoModule,
     UsersModule,
     ChatsModule,
   ],

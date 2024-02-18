@@ -12,10 +12,6 @@ input CreateChatInput {
   exampleField: Int!
 }
 
-input CreateTodoInput {
-  title: String!
-}
-
 type LoginResponse {
   accessToken: String!
   user: User!
@@ -28,21 +24,16 @@ input LoginUserInput {
 
 type Mutation {
   createChat(createChatInput: CreateChatInput!): Chat!
-  createTodo(createTodoInput: CreateTodoInput!): Todo!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   removeChat(id: Int!): Chat!
-  removeTodo(id: Int!): Todo!
   signUp(signUpUserInput: SignUpUserInput!): LoginResponse!
   updateChat(updateChatInput: UpdateChatInput!): Chat!
-  updateTodo(id: Int!, updateTodoInput: UpdateTodoInput!): Todo!
 }
 
 type Query {
   chat(id: Int!): Chat!
   chats: [Chat!]!
   otherUsers(skip: Int, take: Int): [User!]!
-  todo(id: Int!): Todo!
-  todos: [Todo!]!
   user(username: String!): User!
   users: [User!]!
 }
@@ -52,20 +43,10 @@ input SignUpUserInput {
   username: String!
 }
 
-type Todo {
-  id: Int!
-  title: String!
-}
-
 input UpdateChatInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
-}
-
-input UpdateTodoInput {
-  id: Int!
-  title: String
 }
 
 type User {
