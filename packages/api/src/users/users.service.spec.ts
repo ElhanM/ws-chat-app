@@ -70,4 +70,29 @@ describe('UsersService', () => {
       },
     });
   });
+
+  it('should get all other users', async () => {
+    const mockUser = {
+      id: '078d79f4-f4d9-4683-a564-f1d520ba37c1',
+      username: 'elhan',
+    };
+    const mockPagination = {
+      skip: 0,
+      take: 15,
+    };
+
+    // Mock the findMany method in the PrismaService
+    prismaService.user.findMany = jest.fn().mockResolvedValue([]);
+
+    await service.getAllOtherUsers(mockUser, mockPagination);
+
+    expect(prismaService.user.findMany).toHaveBeenCalledWith({
+      ...mockPagination,
+      where: {
+        NOT: {
+          id: mockUser.id,
+        },
+      },
+    });
+  });
 });
