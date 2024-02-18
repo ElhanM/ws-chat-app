@@ -10,6 +10,11 @@ import Loader from "../atoms/Loader";
 import NewChatIcon from "../atoms/NewChatIcon";
 import SidebarComponentWrapper from "../molecules/SidebarComponentWrapper";
 import UserChat from "../organisms/UserChat";
+import { UseQueryVariables } from "@/types/useQueryVariables";
+
+interface OtherUsers {
+  otherUsers: Array<User>;
+}
 
 const Sidebar = () => {
   const { loading, error, data, fetchMore } = useQuery(GET_OTHER_USERS, {
@@ -18,11 +23,13 @@ const Sidebar = () => {
 
   const { currentUser } = useAppSelector((state) => state.currentUser);
 
-  const { isFetching, setIsFetching, scrollableDivRef } = useScrollFetch(
-    fetchMore,
-    data?.otherUsers.length
-  );
-
+  const { isFetching, setIsFetching, scrollableDivRef } = useScrollFetch<
+    OtherUsers,
+    UseQueryVariables
+  >(fetchMore, data?.otherUsers.length, "otherUsers", (dataLength) => ({
+    skip: dataLength,
+    take: 15,
+  }));
   const userChats: UserChats[] = data?.otherUsers.map((user: User) => ({
     ...user,
     message: "Hey there!",
@@ -43,7 +50,7 @@ const Sidebar = () => {
     );
 
   return (
-    <div className="w-1/4 border border-pale">
+    <SidebarComponentWrapper noFlex>
       {/* Sidebar Header */}
       <header className="p-4  flex justify-between items-center bg-black text-white">
         <h1 className="text-2xl font-semibold">
@@ -63,7 +70,7 @@ const Sidebar = () => {
         ))}
         {isFetching && <Loader />}
       </div>
-    </div>
+    </SidebarComponentWrapper>
   );
 };
 

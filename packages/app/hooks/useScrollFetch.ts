@@ -5,21 +5,22 @@ import {
   ApolloQueryResult,
   OperationVariables,
 } from "@apollo/client";
-import { User } from "@ws-chat-app/shared";
 
-interface OtherUsers {
-  otherUsers: Array<User>;
+interface FetchData {
+  [key: string]: any;
 }
 
-const useScrollFetch = (
-  fetchMore: <
-    TFetchData = OtherUsers,
-    TFetchVars extends OperationVariables = OperationVariables,
-  >(
-    fetchMoreOptions: FetchMoreQueryOptions<TFetchVars, TFetchData> &
-      FetchMoreOptions<TFetchData, TFetchVars>
-  ) => Promise<ApolloQueryResult<TFetchData>>,
-  dataLength: number
+const useScrollFetch = <
+  TData extends FetchData = FetchData,
+  TFetchVars extends OperationVariables = OperationVariables,
+>(
+  fetchMore: (
+    fetchMoreOptions: FetchMoreQueryOptions<TFetchVars, TData> &
+      FetchMoreOptions<TData, TFetchVars>
+  ) => Promise<ApolloQueryResult<TData>>,
+  dataLength: number,
+  key: keyof TData,
+  getVariables: (dataLength: number) => TFetchVars
 ) => {
   const [isFetching, setIsFetching] = useState(false);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
@@ -52,25 +53,19 @@ const useScrollFetch = (
   async function fetchMoreData() {
     try {
       await fetchMore({
-        variables: {
-          skip: dataLength,
-          take: 15,
-        },
+        variables: getVariables(dataLength),
         updateQuery: (
-          prev: OtherUsers,
+          prev: TData,
           {
             fetchMoreResult,
           }: {
-            fetchMoreResult?: OtherUsers;
+            fetchMoreResult?: TData;
           }
         ) => {
           if (!fetchMoreResult) return prev;
           return {
             ...prev,
-            otherUsers: [
-              ...prev.otherUsers,
-              ...(fetchMoreResult?.otherUsers || []),
-            ],
+            [key]: [...prev[key], ...(fetchMoreResult?.[key] || [])],
           };
         },
       });
