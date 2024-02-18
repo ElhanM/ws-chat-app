@@ -19,7 +19,7 @@ jest.mock("next/navigation", () => ({
   },
 }));
 
-describe("Page", () => {
+describe("Login", () => {
   it("renders a section", () => {
     const store = configureStore({
       reducer: {
