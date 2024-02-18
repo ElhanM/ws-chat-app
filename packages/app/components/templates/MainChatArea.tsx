@@ -43,36 +43,23 @@ const MainChatArea = ({}: Props) => {
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`flex mb-4 cursor-pointer ${message.incoming ? "" : "justify-end"}
+              className={`flex mb-4 cursor-pointer ${message.incoming ? "" : "flex-row-reverse"}
       `}
             >
-              {message.incoming && (
-                <div className="w-9 h-9 rounded-full flex items-center justify-center ml-2">
-                  <Image
-                    src={message.avatar}
-                    alt="User Avatar"
-                    className="w-8 h-8 rounded-full"
-                    width={36}
-                    height={36}
-                  />
-                </div>
-              )}
+              <div className="w-9 h-9 rounded-full flex items-center justify-center mx-2">
+                <Image
+                  src={message.avatar}
+                  alt="User Avatar"
+                  className="w-8 h-8 rounded-full"
+                  width={36}
+                  height={36}
+                />
+              </div>
               <div
                 className={`flex max-w-96 rounded-lg p-3 gap-3 ${message.incoming ? "bg-incoming-message" : "bg-sent-message"}`}
               >
                 <p className="text-white">{message.text}</p>
               </div>
-              {!message.incoming && (
-                <div className="w-9 h-9 rounded-full flex items-center justify-center mr-2">
-                  <Image
-                    src={message.avatar}
-                    alt="User Avatar"
-                    className="w-8 h-8 rounded-full"
-                    width={36}
-                    height={36}
-                  />
-                </div>
-              )}
             </div>
           ))}
         </div>
