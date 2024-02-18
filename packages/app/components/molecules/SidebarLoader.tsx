@@ -5,7 +5,7 @@ type Props = {};
 
 const SidebarLoader = (props: Props) => {
   return (
-    <div className="w-1/4 border border-pale flex justify-center items-center">
+    <div className="w-1/4 border border-pale flex-center">
       <Loader />
     </div>
   );

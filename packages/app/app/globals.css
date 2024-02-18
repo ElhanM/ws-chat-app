@@ -31,3 +31,9 @@ body {
     text-wrap: balance;
   }
 }
+
+@layer components {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+}

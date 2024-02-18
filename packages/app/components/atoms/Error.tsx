@@ -6,7 +6,7 @@ interface ErrorProps {
 
 const Error: React.FC<ErrorProps> = ({ message }) => (
   <div
-    className="bg-inherit border border-inherit text-inherit px-4 py-3 rounded relative w-full h-full flex justify-center items-center"
+    className="bg-inherit border border-inherit text-inherit px-4 py-3 rounded relative w-full h-full flex-center"
     role="alert"
   >
     <span className="mr-1">Error: </span>
