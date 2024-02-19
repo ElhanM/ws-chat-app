@@ -1,9 +1,6 @@
-import React from "react";
-import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { render } from "@testing-library/react";
 import Page from "../../app/chats/page";
-import Sidebar from "../../components/templates/Sidebar";
-import MainChatArea from "../../components/templates/MainChatArea";
 
 jest.mock("../../components/templates/Sidebar.tsx", () => {
   const MockSidebar = () => <div>Sidebar</div>;
