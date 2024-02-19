@@ -3,14 +3,26 @@
 # ------------------------------------------------------
 
 type Chat {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  content: String!
+  createdAt: DateTime!
+  id: String!
+  receiver: Int!
+  receiverId: String!
+  sender: Int!
+  senderId: String!
+  updatedAt: DateTime!
 }
 
 input CreateChatInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  content: String!
+  receiverId: String!
+  senderId: String!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type LoginResponse {
   accessToken: String!
@@ -25,13 +37,13 @@ input LoginUserInput {
 type Mutation {
   createChat(createChatInput: CreateChatInput!): Chat!
   login(loginUserInput: LoginUserInput!): LoginResponse!
-  removeChat(id: Int!): Chat!
+  removeChat(id: String!): Chat!
   signUp(signUpUserInput: SignUpUserInput!): LoginResponse!
   updateChat(updateChatInput: UpdateChatInput!): Chat!
 }
 
 type Query {
-  chat(id: Int!): Chat!
+  chat(id: String!): Chat!
   chats: [Chat!]!
   otherUsers(skip: Int, take: Int): [User!]!
   user(username: String!): User!
@@ -44,12 +56,16 @@ input SignUpUserInput {
 }
 
 input UpdateChatInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  content: String
+  id: String!
+  receiverId: String
+  senderId: String
 }
 
 type User {
+  createdAt: DateTime!
   id: String!
+  password: String!
+  updatedAt: DateTime!
   username: String!
 }

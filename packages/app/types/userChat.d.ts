@@ -1,6 +1,6 @@
 import { User } from "@ws-chat-app/shared";
 
-export type UserChats = User & {
+export type UserChat = User & {
   message: string;
   avatar: string;
 };

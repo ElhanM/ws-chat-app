@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { SignUpUserInput } from './dto/sign-up-user.input';
 import * as bcrypt from 'bcrypt';
 import { Prisma } from '@prisma/client';
+import { User } from '@ws-chat-app/src';
 
 @Injectable()
 export class AuthService {
