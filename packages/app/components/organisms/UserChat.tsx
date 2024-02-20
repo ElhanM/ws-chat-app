@@ -1,15 +1,16 @@
-// File: components/UserChat.tsx
 import React from "react";
 import Image from "next/image";
 import { UserChat } from "@/types/userChat";
 import { useAppSelector } from "@/lib/hooks";
-
+import { useDispatch } from "react-redux";
+import { setSelectedUser } from "@/lib/features/users/selectedUserSlice";
 interface UserChatProps {
   userId: string;
-  index: number;
 }
 
-const UserChat: React.FC<UserChatProps> = ({ userId, index }) => {
+const UserChat: React.FC<UserChatProps> = ({ userId }) => {
+  const dispatch = useDispatch();
+  const selectedUserId = useAppSelector((state) => state.selectedUser.userId);
   const user = useAppSelector((state) => state.users.entities[userId]);
 
   const userChat: UserChat = {
@@ -22,8 +23,9 @@ const UserChat: React.FC<UserChatProps> = ({ userId, index }) => {
     <div
       key={userId}
       className={`flex items-center mb-4 cursor-pointer hover:bg-chat-hover p-2 rounded-md
-    ${index === 0 && "bg-selected-chat hover:bg-selected-chat"}
+    ${userId === selectedUserId && "bg-selected-chat hover:bg-selected-chat"}
     `}
+      onClick={() => dispatch(setSelectedUser(userId))}
     >
       <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
         <Image

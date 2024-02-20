@@ -13,6 +13,7 @@ import Loader from "../atoms/Loader";
 import NewChatIcon from "../atoms/NewChatIcon";
 import SidebarComponentWrapper from "../molecules/SidebarComponentWrapper";
 import UserChat from "../organisms/UserChat";
+import { setSelectedUser } from "@/lib/features/users/selectedUserSlice";
 
 interface OtherUsers {
   otherUsers: Array<User>;
@@ -20,6 +21,8 @@ interface OtherUsers {
 
 const Sidebar = () => {
   const dispatch = useDispatch();
+  const selectedUserId = useAppSelector((state) => state.selectedUser.userId);
+
   const { loading, error, data, fetchMore } = useQuery(GET_OTHER_USERS, {
     variables: { skip: 0, take: 15 },
   });
@@ -27,6 +30,10 @@ const Sidebar = () => {
   useEffect(() => {
     if (data?.otherUsers) {
       dispatch(setUsers(data.otherUsers));
+    }
+
+    if (!selectedUserId && data?.otherUsers.length) {
+      dispatch(setSelectedUser(data.otherUsers[0].id));
     }
   }, [data, dispatch]);
 
@@ -72,8 +79,8 @@ const Sidebar = () => {
         className="overflow-y-auto h-screen p-3 mb-9 pb-20 bg-black"
       >
         <h1 className="text-xl font-semibold mb-2">Messages</h1>
-        {userIds.map((userId, index) => (
-          <UserChat userId={userId} key={userId} index={index} />
+        {userIds.map((userId) => (
+          <UserChat userId={userId} key={userId} />
         ))}
         {isFetching && <Loader />}
       </div>

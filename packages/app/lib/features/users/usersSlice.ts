@@ -18,7 +18,6 @@ export const usersSlice = createSlice({
 
 export const { setUsers } = usersSlice.actions;
 
-// Export the customized selectors for this adapter
 export const {
   selectAll: selectAllUsers,
   selectById: selectUserById,
