@@ -14,6 +14,7 @@ import NewChatIcon from "../atoms/NewChatIcon";
 import SidebarComponentWrapper from "../molecules/SidebarComponentWrapper";
 import UserChat from "../organisms/UserChat";
 import { setSelectedUser } from "@/lib/features/users/selectedUserSlice";
+import { setLoading } from "@/lib/features/queries/loadingSlice";
 
 interface OtherUsers {
   otherUsers: Array<User>;
@@ -26,6 +27,10 @@ const Sidebar = () => {
   const { loading, error, data, fetchMore } = useQuery(GET_OTHER_USERS, {
     variables: { skip: 0, take: 15 },
   });
+
+  useEffect(() => {
+    dispatch(setLoading({ queryName: "GET_OTHER_USERS", isLoading: loading }));
+  }, [loading, dispatch]);
 
   useEffect(() => {
     if (data?.otherUsers) {

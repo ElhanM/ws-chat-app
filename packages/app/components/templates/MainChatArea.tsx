@@ -1,10 +1,19 @@
+"use client";
+import { useAppSelector } from "@/lib/hooks";
 import { Message } from "@/types/message";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
+import Loader from "../atoms/Loader";
 
 type Props = {};
 
 const MainChatArea = ({}: Props) => {
+  const selectedUserId = useAppSelector((state) => state.selectedUser.userId)!;
+  const user = useAppSelector((state) => state.users.entities[selectedUserId]);
+  const isGetOtherUsersLoading = useAppSelector(
+    (state) => state.loading.GET_OTHER_USERS
+  );
+
   const messages: Message[] = [
     {
       text: "Hey Bob, how's it going?",
@@ -35,7 +44,13 @@ const MainChatArea = ({}: Props) => {
       <div className="flex-1 bg-black">
         {/* Chat Header */}
         <header className="p-4 bg-black text-gray-200 border border-pale border-l-0">
-          <h1 className="text-2xl font-semibold bg-black">Alice</h1>
+          <h1 className="text-2xl font-semibold bg-black">
+            {isGetOtherUsersLoading ? (
+              <Loader flexStart small />
+            ) : (
+              user?.username ?? "No Chat Selected"
+            )}
+          </h1>
         </header>
 
         {/* Chat Messages */}

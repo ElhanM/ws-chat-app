@@ -30,7 +30,7 @@ const UserChat: React.FC<UserChatProps> = ({ userId }) => {
       <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
         <Image
           src={userChat.avatar}
-          alt="User Avatar"
+          alt={userChat.username}
           className="w-12 h-12 rounded-full"
           width={48}
           height={48}

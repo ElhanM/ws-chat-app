@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import currentUserReducer from "./features/users/currentUserSlice";
 import usersReducer from "./features/users/usersSlice";
 import selectedUserReducer from "./features/users/selectedUserSlice";
+import loadingReducer from "./features/queries/loadingSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore = () => {
       currentUser: currentUserReducer,
       users: usersReducer,
       selectedUser: selectedUserReducer,
+      loading: loadingReducer,
     },
   });
 };
