@@ -29,4 +29,22 @@ export class ChatsService {
   async remove(id: string) {
     return this.prismaService.chat.delete({ where: { id } });
   }
+
+  async chatsBetweenUsers(senderId: string, receiverId: string) {
+    return this.prismaService.chat.findMany({
+      where: {
+        OR: [
+          {
+            AND: [{ senderId }, { receiverId }],
+          },
+          {
+            AND: [{ senderId: receiverId }, { receiverId: senderId }],
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+  }
 }

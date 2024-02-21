@@ -14,7 +14,7 @@ const ChatInput = ({ newMessage, setNewMessage, sendMessage }: Props) => {
         sendMessage();
       }}
     >
-      <footer className="p-4 absolute bottom-0 w-3/4 border border-pale bg-black border-l-0">
+      <footer className="p-4 bottom-0 w-3/4 border border-pale bg-black border-l-0 w-full">
         <div className="flex items-center">
           <input
             type="text"

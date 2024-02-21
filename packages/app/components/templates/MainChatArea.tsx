@@ -10,8 +10,14 @@ import ChatInput from "../molecules/ChatInput";
 import { ChatHeader } from "../organisms/ChatHeader";
 import ChatMessages from "./ChatMessages";
 import { NewMessage } from "@ws-chat-app/shared";
+import { GET_CHATS_BETWEEN_USERS } from "@/graphql/getChatsBetweenUsers";
+import useQuery from "@/hooks/useCustomQuery";
 
 type Props = {};
+
+interface ChatsData {
+  chatsBetweenUsers: NewMessage[];
+}
 
 const MainChatArea = ({}: Props) => {
   const [messages, setMessages] = useState<NewMessage[]>([]);
@@ -24,6 +30,15 @@ const MainChatArea = ({}: Props) => {
   const isGetOtherUsersLoading = useAppSelector(
     (state) => state.loading.GET_OTHER_USERS
   );
+
+  const { loading, error, data } = useQuery<ChatsData>(
+    GET_CHATS_BETWEEN_USERS,
+    {
+      variables: { senderId: currentUser?.id, receiverId: selectedUserId },
+    }
+  );
+
+  console.log({ data });
 
   useEffect(() => {
     setMessages([]);
@@ -63,6 +78,7 @@ const MainChatArea = ({}: Props) => {
   }, [currentUser, selectedUserId]);
 
   const sendMessage = () => {
+    if (!newMessage.trim()) return;
     if (socketRef.current) {
       socketRef.current.emit("send_message", {
         message: newMessage,
@@ -75,12 +91,14 @@ const MainChatArea = ({}: Props) => {
 
   return (
     <>
-      <div className="flex-1 bg-black">
+      <div className="flex-1 flex flex-col bg-black">
         <ChatHeader
           isGetOtherUsersLoading={isGetOtherUsersLoading}
           user={user}
         />
-        <ChatMessages messages={messages} />
+        <ChatMessages
+          messages={[...(data?.chatsBetweenUsers ?? []), ...messages]}
+        />
         <ChatInput
           newMessage={newMessage}
           setNewMessage={setNewMessage}

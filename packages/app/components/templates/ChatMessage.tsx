@@ -1,3 +1,4 @@
+"use client";
 import { useAppSelector } from "@/lib/hooks";
 import { NewMessage } from "@ws-chat-app/shared";
 import Image from "next/image";

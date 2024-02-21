@@ -32,4 +32,12 @@ export class ChatsResolver {
   removeChat(@Args('id') id: string) {
     return this.chatsService.remove(id);
   }
+
+  @Query(() => [Chat], { name: 'chatsBetweenUsers' })
+  chatsBetweenUsers(
+    @Args('senderId') senderId: string,
+    @Args('receiverId') receiverId: string,
+  ) {
+    return this.chatsService.chatsBetweenUsers(senderId, receiverId);
+  }
 }
