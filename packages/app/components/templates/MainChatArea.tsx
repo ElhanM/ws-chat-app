@@ -2,19 +2,61 @@
 import { useAppSelector } from "@/lib/hooks";
 import { Message } from "@/types/message";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Loader from "../atoms/Loader";
+import io, { Socket } from "socket.io-client";
+import { getTokenFromLocalStorage } from "@/utils/localStorage";
+import ChatInput from "../molecules/ChatInput";
+import { ChatHeader } from "../organisms/ChatHeader";
+import ChatMessages from "./ChatMessages";
 
 type Props = {};
 
 const MainChatArea = ({}: Props) => {
+  const [messages, setMessages] = useState<string[]>([]);
+  const [newMessage, setNewMessage] = useState("");
+  const socketRef = useRef<Socket | null>(null);
+
   const selectedUserId = useAppSelector((state) => state.selectedUser.userId)!;
   const user = useAppSelector((state) => state.users.entities[selectedUserId]);
   const isGetOtherUsersLoading = useAppSelector(
     (state) => state.loading.GET_OTHER_USERS
   );
 
-  const messages: Message[] = [
+  useEffect(() => {
+    const token = getTokenFromLocalStorage();
+
+    const socket = io(process.env.NEXT_PUBLIC_WS_URL ?? "", {
+      auth: {
+        token,
+      },
+      // https://stackoverflow.com/questions/72765760/why-do-i-get-a-this-cors-error-from-using-socket-io
+      transports: ["websocket"],
+    });
+
+    socket.on("message", (message) => {
+      setMessages((messages) => [...messages, message]);
+    });
+
+    socketRef.current = socket;
+
+    // something probably rerenders this component
+    // which causes this return function to be called unexpectedly
+    // because we want this function to only be called when the component is unmounted
+    // we will use this JavaScript approach to disconnect the socket
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  const sendMessage = () => {
+    if (socketRef.current) {
+      socketRef.current.emit("message", newMessage);
+      setNewMessage("");
+    }
+  };
+
+  const tempMessages: Message[] = [
     {
       text: "Hey Bob, how's it going?",
       sender: "Alice",
@@ -38,60 +80,23 @@ const MainChatArea = ({}: Props) => {
     },
   ];
 
+  useEffect(() => {
+    console.log({ messages });
+  }, [messages]);
+
   return (
     <>
-      {/* Main Chat Area */}
       <div className="flex-1 bg-black">
-        {/* Chat Header */}
-        <header className="p-4 bg-black text-gray-200 border border-pale border-l-0">
-          <h1 className="text-2xl font-semibold bg-black">
-            {isGetOtherUsersLoading ? (
-              <Loader flexStart small />
-            ) : (
-              user?.username ?? "No Chat Selected"
-            )}
-          </h1>
-        </header>
-
-        {/* Chat Messages */}
-        <div className="h-screen overflow-y-auto p-4 pb-36">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`flex mb-4 cursor-pointer ${message.incoming ? "" : "flex-row-reverse"}
-      `}
-            >
-              <div className="w-9 h-9 rounded-full flex items-center justify-center mx-2">
-                <Image
-                  src={message.avatar}
-                  alt="User Avatar"
-                  className="w-8 h-8 rounded-full"
-                  width={36}
-                  height={36}
-                />
-              </div>
-              <div
-                className={`flex max-w-96 rounded-lg p-3 gap-3 ${message.incoming ? "bg-incoming-message" : "bg-sent-message"}`}
-              >
-                <p className="text-white">{message.text}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Chat Input */}
-        <footer className="p-4 absolute bottom-0 w-3/4 border border-pale bg-black border-l-0">
-          <div className="flex items-center">
-            <input
-              type="text"
-              placeholder="Type a message..."
-              className="w-full p-2 border focus:outline-none text-gray-200 border-gray-600 bg-black rounded-2xl"
-            />
-            <button className="px-4 py-2 rounded-md ml-2 text-send-button bg-black font-semibold hover:text-white">
-              Send
-            </button>
-          </div>
-        </footer>
+        <ChatHeader
+          isGetOtherUsersLoading={isGetOtherUsersLoading}
+          user={user}
+        />
+        <ChatMessages messages={messages} tempMessages={tempMessages} />
+        <ChatInput
+          newMessage={newMessage}
+          setNewMessage={setNewMessage}
+          sendMessage={sendMessage}
+        />
       </div>
     </>
   );

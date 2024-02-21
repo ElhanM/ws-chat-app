@@ -39,6 +39,6 @@ const config: Config = {
       backgroundColor: {},
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar")],
 };
 export default config;

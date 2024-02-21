@@ -43,7 +43,6 @@ const Sidebar = () => {
   }, [data, dispatch]);
 
   const userIds = useAppSelector(selectUserIds);
-  console.log(userIds);
 
   const { currentUser } = useAppSelector((state) => state.currentUser);
 
@@ -81,7 +80,7 @@ const Sidebar = () => {
       {/* UserChat List */}
       <div
         ref={scrollableDivRef}
-        className="overflow-y-auto h-screen p-3 mb-9 pb-20 bg-black"
+        className="overflow-y-auto h-screen p-3 mb-9 pb-20 bg-black scrollbar-thin scrollbar-thumb-gray-600 hover:scrollbar-thumb-gray-500"
       >
         <h1 className="text-xl font-semibold mb-2">Messages</h1>
         {userIds.map((userId) => (
