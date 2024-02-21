@@ -2,12 +2,14 @@
 import React, { useEffect, useRef } from "react";
 import { NewMessage } from "@ws-chat-app/shared";
 import ChatMessage from "./ChatMessage";
+import Loader from "../atoms/Loader";
 
 type Props = {
   messages: NewMessage[];
+  loading: boolean;
 };
 
-const ChatMessages = ({ messages }: Props) => {
+const ChatMessages = ({ messages, loading }: Props) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -20,7 +22,13 @@ const ChatMessages = ({ messages }: Props) => {
   }, [messages]);
 
   return (
-    <div className="h-full overflow-y-auto p-4" ref={containerRef}>
+    <div
+      className={`h-full overflow-y-auto p-4
+    ${loading && "flex items-center justify-center"}
+    `}
+      ref={containerRef}
+    >
+      {loading && <Loader />}
       {messages.map((message, index) => (
         <ChatMessage key={index} message={message} />
       ))}

@@ -31,14 +31,18 @@ const MainChatArea = ({}: Props) => {
     (state) => state.loading.GET_OTHER_USERS
   );
 
-  const { loading, error, data } = useQuery<ChatsData>(
+  const { loading, error, data, refetch } = useQuery<ChatsData>(
     GET_CHATS_BETWEEN_USERS,
     {
       variables: { senderId: currentUser?.id, receiverId: selectedUserId },
     }
   );
 
-  console.log({ data });
+  useEffect(() => {
+    if (!loading) {
+      refetch();
+    }
+  }, [selectedUserId]);
 
   useEffect(() => {
     setMessages([]);
@@ -98,6 +102,7 @@ const MainChatArea = ({}: Props) => {
         />
         <ChatMessages
           messages={[...(data?.chatsBetweenUsers ?? []), ...messages]}
+          loading={loading}
         />
         <ChatInput
           newMessage={newMessage}
