@@ -26,6 +26,10 @@ const MainChatArea = ({}: Props) => {
   );
 
   useEffect(() => {
+    setMessages([]);
+  }, [selectedUserId]);
+
+  useEffect(() => {
     const token = getTokenFromLocalStorage();
 
     const socket = io(process.env.NEXT_PUBLIC_WS_URL ?? "", {
@@ -36,8 +40,15 @@ const MainChatArea = ({}: Props) => {
       transports: ["websocket"],
     });
 
-    socket.on("new_message", (message) => {
-      setMessages((messages) => [...messages, message]);
+    socket.on("new_message", (message: NewMessage) => {
+      if (
+        message.senderId === currentUser?.id ||
+        message.receiverId === currentUser?.id ||
+        message.senderId === selectedUserId ||
+        message.receiverId === selectedUserId
+      ) {
+        setMessages((messages) => [...messages, message]);
+      }
     });
 
     socketRef.current = socket;
@@ -49,7 +60,7 @@ const MainChatArea = ({}: Props) => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [currentUser, selectedUserId]);
 
   const sendMessage = () => {
     if (socketRef.current) {
