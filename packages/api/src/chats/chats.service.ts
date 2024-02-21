@@ -47,4 +47,44 @@ export class ChatsService {
       },
     });
   }
+
+  async getChatsWithLatestMessage(userId: string) {
+    // First, get all unique chat pairs involving the user
+    const chatPairs = await this.prismaService.chat.findMany({
+      where: {
+        OR: [{ senderId: userId }, { receiverId: userId }],
+      },
+      select: {
+        senderId: true,
+        receiverId: true,
+      },
+      distinct: ['senderId', 'receiverId'],
+      take: 10,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    // Then, for each unique pair, get the latest chat
+    const chats = await Promise.all(
+      chatPairs.map((pair) =>
+        this.prismaService.chat.findFirst({
+          where: {
+            AND: [{ senderId: pair.senderId }, { receiverId: pair.receiverId }],
+          },
+          include: {
+            sender: true,
+            receiver: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        }),
+      ),
+    );
+
+    console.log({ chats });
+
+    return chats;
+  }
 }

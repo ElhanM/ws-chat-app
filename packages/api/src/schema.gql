@@ -6,9 +6,9 @@ type Chat {
   content: String!
   createdAt: DateTime!
   id: String!
-  receiver: Int!
+  receiver: User!
   receiverId: String!
-  sender: Int!
+  sender: User!
   senderId: String!
   updatedAt: DateTime!
 }
@@ -46,6 +46,7 @@ type Query {
   chat(id: String!): Chat!
   chats: [Chat!]!
   chatsBetweenUsers(receiverId: String!, senderId: String!): [Chat!]!
+  chatsWithLatestMessage(userId: String!): [Chat!]!
   otherUsers(skip: Int, take: Int): [User!]!
   user(username: String!): User!
   users: [User!]!

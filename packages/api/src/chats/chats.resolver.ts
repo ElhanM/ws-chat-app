@@ -40,4 +40,11 @@ export class ChatsResolver {
   ) {
     return this.chatsService.chatsBetweenUsers(senderId, receiverId);
   }
+
+  @Query(() => [Chat], { name: 'chatsWithLatestMessage' })
+  chatsWithLatestMessage(
+    @Args('userId', { type: () => String }) userId: string,
+  ) {
+    return this.chatsService.getChatsWithLatestMessage(userId);
+  }
 }

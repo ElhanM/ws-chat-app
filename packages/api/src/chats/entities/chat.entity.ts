@@ -1,4 +1,5 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { User } from 'src/users/entities/user.entity';
 
 @ObjectType()
 export class Chat {
@@ -20,9 +21,9 @@ export class Chat {
   @Field()
   receiverId: string;
 
-  @Field(() => Int)
-  sender: string;
+  @Field(() => User)
+  sender: User;
 
-  @Field(() => Int)
-  receiver: string;
+  @Field(() => User)
+  receiver: User;
 }
