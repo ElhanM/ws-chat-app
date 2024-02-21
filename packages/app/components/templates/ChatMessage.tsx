@@ -19,7 +19,7 @@ const ChatMessage = ({ message }: Props) => {
       <div className="w-9 h-9 rounded-full flex items-center justify-center mx-2">
         <Image
           src={
-            "https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+            "https://placehold.co/200x/8eafff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
           }
           alt="User Avatar"
           className="w-8 h-8 rounded-full"
