@@ -32,7 +32,6 @@ const LoginForm = (props: Props) => {
     login: AuthUser;
   }>(LOGIN_MUTATION, {
     onCompleted: (data) => {
-      console.log({ data });
       dispatch(setCurrentUser(data.login));
       dispatch(addTokenToLocalStorage(data.login.accessToken));
       // https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#redirect-function

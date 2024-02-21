@@ -9,14 +9,16 @@ import { getTokenFromLocalStorage } from "@/utils/localStorage";
 import ChatInput from "../molecules/ChatInput";
 import { ChatHeader } from "../organisms/ChatHeader";
 import ChatMessages from "./ChatMessages";
+import { NewMessage } from "@ws-chat-app/shared";
 
 type Props = {};
 
 const MainChatArea = ({}: Props) => {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<NewMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const socketRef = useRef<Socket | null>(null);
 
+  const { currentUser } = useAppSelector((state) => state.currentUser);
   const selectedUserId = useAppSelector((state) => state.selectedUser.userId)!;
   const user = useAppSelector((state) => state.users.entities[selectedUserId]);
   const isGetOtherUsersLoading = useAppSelector(
@@ -34,7 +36,7 @@ const MainChatArea = ({}: Props) => {
       transports: ["websocket"],
     });
 
-    socket.on("message", (message) => {
+    socket.on("new_message", (message) => {
       setMessages((messages) => [...messages, message]);
     });
 
@@ -51,38 +53,14 @@ const MainChatArea = ({}: Props) => {
 
   const sendMessage = () => {
     if (socketRef.current) {
-      socketRef.current.emit("message", newMessage);
+      socketRef.current.emit("send_message", {
+        message: newMessage,
+        senderId: currentUser?.id,
+        receiverId: selectedUserId,
+      });
       setNewMessage("");
     }
   };
-
-  const tempMessages: Message[] = [
-    {
-      text: "Hey Bob, how's it going?",
-      sender: "Alice",
-      avatar:
-        "https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato",
-      incoming: true,
-    },
-    {
-      text: "Hey Alice, I'm doing great! How about you?",
-      sender: "Bob",
-      avatar:
-        "https://placehold.co/200x/ad922e/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato",
-      incoming: false,
-    },
-    {
-      text: "I'm doing good too. Thanks for asking!",
-      sender: "Alice",
-      avatar:
-        "https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato",
-      incoming: true,
-    },
-  ];
-
-  useEffect(() => {
-    console.log({ messages });
-  }, [messages]);
 
   return (
     <>
@@ -91,7 +69,7 @@ const MainChatArea = ({}: Props) => {
           isGetOtherUsersLoading={isGetOtherUsersLoading}
           user={user}
         />
-        <ChatMessages messages={messages} tempMessages={tempMessages} />
+        <ChatMessages messages={messages} />
         <ChatInput
           newMessage={newMessage}
           setNewMessage={setNewMessage}

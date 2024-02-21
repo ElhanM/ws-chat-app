@@ -1,20 +1,25 @@
-import { Message } from "@/types/message";
+import { useAppSelector } from "@/lib/hooks";
+import { NewMessage } from "@ws-chat-app/shared";
 import Image from "next/image";
 import React from "react";
 
 type Props = {
-  message: Message;
-  isIncoming: boolean;
+  message: NewMessage;
 };
 
-const ChatMessage = ({ message, isIncoming }: Props) => {
+const ChatMessage = ({ message }: Props) => {
+  const { currentUser } = useAppSelector((state) => state.currentUser);
+  const isIncoming = message.senderId !== currentUser?.id;
+
   return (
     <div
-      className={`flex mb-4 cursor-pointer ${isIncoming || "flex-row-reverse"}`}
+      className={`flex mb-4 cursor-pointer ${isIncoming ? "" : "flex-row-reverse"}`}
     >
       <div className="w-9 h-9 rounded-full flex items-center justify-center mx-2">
         <Image
-          src={message.avatar}
+          src={
+            "https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+          }
           alt="User Avatar"
           className="w-8 h-8 rounded-full"
           width={36}
@@ -24,7 +29,7 @@ const ChatMessage = ({ message, isIncoming }: Props) => {
       <div
         className={`flex max-w-96 rounded-lg p-3 gap-3 ${isIncoming ? "bg-incoming-message" : "bg-sent-message"}`}
       >
-        <p className="text-white">{message.text}</p>
+        <p className="text-white">{message.content}</p>{" "}
       </div>
     </div>
   );
