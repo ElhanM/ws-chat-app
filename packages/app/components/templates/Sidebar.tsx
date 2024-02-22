@@ -12,13 +12,15 @@ import { useAppSelector } from "@/lib/hooks";
 import { UseQueryVariables } from "@/types/useQueryVariables";
 import { LatestChat } from "@ws-chat-app/shared";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Error from "../atoms/Error";
 import Loader from "../atoms/Loader";
 import NewChatIcon from "../atoms/NewChatIcon";
 import SidebarComponentWrapper from "../molecules/SidebarComponentWrapper";
 import NewChatModal from "../organisms/NewChatModal";
 import UserChat from "../organisms/UserChat";
+import { RootState } from "@/lib/store";
+import { triggerRefetch } from "@/lib/features/queries/refetchSlice";
 
 interface LatestChatData {
   chatsWithLatestMessage: LatestChat[];
@@ -35,12 +37,30 @@ const Sidebar = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const { loading, error, data, fetchMore } = useQuery<LatestChatData>(
+  const shouldRefetch = useSelector(
+    (state: RootState) => state.refetch["GET_CHATS_WITH_LATEST_MESSAGE"]
+  );
+
+  const { loading, error, data, fetchMore, refetch } = useQuery<LatestChatData>(
     GET_CHATS_WITH_LATEST_MESSAGE,
     {
       variables: { skip: 0, take: 15 },
     }
   );
+
+  useEffect(() => {
+    if (shouldRefetch) {
+      // refetch does not trigger the loading state
+      refetch().then(() => {
+        // Scroll to the top after refetching
+        if (scrollableDivRef.current) {
+          scrollableDivRef.current.scrollTo(0, 0);
+        }
+      });
+      // Reset the refetch state for the query after fetching
+      dispatch(triggerRefetch({ queryName: "GET_CHATS_WITH_LATEST_MESSAGE" }));
+    }
+  }, [shouldRefetch]);
 
   useEffect(() => {
     dispatch(

@@ -3,12 +3,13 @@ import { GET_CHATS_BETWEEN_USERS } from "@/graphql/queries/getChatsBetweenUsers"
 import useQuery from "@/hooks/useCustomQuery";
 import { useAppSelector } from "@/lib/hooks";
 import { getTokenFromLocalStorage } from "@/utils/localStorage";
-import { NewMessage } from "@ws-chat-app/shared";
+import { NewMessage, User } from "@ws-chat-app/shared";
 import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 import ChatInput from "../molecules/ChatInput";
 import { ChatHeader } from "../organisms/ChatHeader";
 import ChatMessages from "./ChatMessages";
+import { selectAllChatUsers } from "@/lib/features/users/chatUsersSlice";
 
 type Props = {};
 
@@ -23,7 +24,20 @@ const MainChatArea = ({}: Props) => {
 
   const { currentUser } = useAppSelector((state) => state.currentUser);
   const selectedUserId = useAppSelector((state) => state.selectedUser.userId)!;
-  const user = useAppSelector((state) => state.users.entities[selectedUserId]);
+  const getUserBySelectedUserId = useAppSelector(
+    (state) => state.users.entities[selectedUserId]
+  );
+  const chats = useAppSelector(selectAllChatUsers);
+  const chat = chats.find(
+    (chat) =>
+      chat.receiverId === selectedUserId || chat.senderId === selectedUserId
+  );
+  const isUserReceiverOrSender =
+    chat?.receiverId === selectedUserId ? "receiver" : "sender";
+  const user: User = chat?.[isUserReceiverOrSender].id
+    ? chat[isUserReceiverOrSender]
+    : getUserBySelectedUserId;
+
   const isGetChatsWithLatestMessageLoading = useAppSelector(
     (state) => state.loading.GET_CHATS_WITH_LATEST_MESSAGE
   );
@@ -94,7 +108,9 @@ const MainChatArea = ({}: Props) => {
     <>
       <div className="flex-1 flex flex-col bg-black">
         <ChatHeader
-          isGetChatsWithLatestMessageLoading={isGetChatsWithLatestMessageLoading}
+          isGetChatsWithLatestMessageLoading={
+            isGetChatsWithLatestMessageLoading
+          }
           user={user}
         />
         <ChatMessages

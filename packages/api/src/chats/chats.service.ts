@@ -71,8 +71,6 @@ export class ChatsService {
     LIMIT ${take} OFFSET ${skip}
   `;
 
-    console.log({ chatPairs });
-
     // Then, for each unique pair, get the latest chat
     const chats: LatestChat[] = await Promise.all(
       chatPairs.map((pair) =>
@@ -90,8 +88,6 @@ export class ChatsService {
         }),
       ),
     );
-
-    console.log({ chats });
 
     return chats.sort(
       (a, b) =>

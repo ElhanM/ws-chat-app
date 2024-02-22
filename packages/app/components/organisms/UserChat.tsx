@@ -59,8 +59,10 @@ const UserChat: React.FC<UserChatProps> = ({
   return (
     <div
       key={userId}
-      className={`flex items-center mb-4 cursor-pointer hover:bg-chat-hover p-2 rounded-md
-    ${conditionalUserId === selectedUserId && !modal && "bg-selected-chat hover:bg-selected-chat"}
+      className={`flex items-center mb-4 cursor-pointer 
+      ${modal ? "hover:bg-lighter-black" : "hover:bg-chat-hover"}
+      r p-2 rounded-md
+    ${conditionalUserId === selectedUserId && (!modal ? "bg-selected-chat hover:bg-selected-chat" : "bg-black hover:bg-black")}
     `}
       onClick={() => dispatch(setSelectedUser(conditionalUserId))}
     >
@@ -75,7 +77,7 @@ const UserChat: React.FC<UserChatProps> = ({
       </div>
       <div className="flex-1">
         <h2 className="text-lg font-semibold">{userChat.username}</h2>
-        <p className="text-pale-text">{userChat.message}</p>
+        {!userId ? <p className="text-pale-text">{userChat.message}</p> : null}
       </div>
     </div>
   );

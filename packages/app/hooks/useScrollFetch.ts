@@ -40,7 +40,6 @@ const useScrollFetch = <
   }, [dataLength, isFetching, isModalOpen]);
 
   function handleScroll() {
-    console.log("scrolling");
     const scrollableDiv = scrollableDivRef.current;
     if (!scrollableDiv) return;
 

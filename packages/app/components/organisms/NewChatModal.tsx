@@ -22,9 +22,21 @@ type Props = {
 
 const NewChatModal = ({ isModalOpen, toggleModal }: Props) => {
   const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [searchTerm]);
 
   const { loading, error, data, fetchMore } = useQuery(GET_OTHER_USERS, {
-    variables: { skip: 0, take: 15 },
+    variables: { skip: 0, take: 15, searchTerm: debouncedSearchTerm },
   });
 
   useEffect(() => {
@@ -65,6 +77,8 @@ const NewChatModal = ({ isModalOpen, toggleModal }: Props) => {
           <input
             className="w-full h-full bg-modal-bg focus:outline-none"
             placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div ref={scrollableDivRef} className="mt-2 h-[30vh] overflow-y-auto">
@@ -76,7 +90,10 @@ const NewChatModal = ({ isModalOpen, toggleModal }: Props) => {
           {isFetching && <Loader />}
         </div>
         <div>
-          <button className="px-4 py-2 text-white bg-blue-500 rounded mt-5 w-full">
+          <button
+            className="px-4 py-2 text-white bg-blue-500 rounded mt-5 w-full"
+            onClick={toggleModal}
+          >
             Chat
           </button>
         </div>

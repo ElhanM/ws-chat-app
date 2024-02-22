@@ -34,14 +34,29 @@ export class UsersService {
     });
   }
 
-  getAllOtherUsers(currentUser: User, pagination: Prisma.UserFindManyArgs) {
-    return this.prismaService.user.findMany({
-      ...pagination,
-      where: {
-        NOT: {
-          id: currentUser.id,
-        },
+  async getAllOtherUsers(
+    currentUser: User,
+    pagination: Prisma.UserFindManyArgs,
+    searchTerm: string,
+  ) {
+    let whereClause: Prisma.UserWhereInput = {
+      NOT: {
+        id: currentUser.id,
       },
+    };
+
+    if (searchTerm) {
+      whereClause = {
+        ...whereClause,
+        AND: [{ username: { contains: searchTerm, mode: 'insensitive' } }],
+      };
+    }
+
+    const results = await this.prismaService.user.findMany({
+      ...pagination,
+      where: whereClause,
     });
+
+    return results;
   }
 }

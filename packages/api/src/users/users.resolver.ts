@@ -26,9 +26,11 @@ export class UsersResolver {
     @Context() context: ContextWithAuth,
     @Args('skip', { type: () => Int, nullable: true }) skip: number,
     @Args('take', { type: () => Int, nullable: true }) take: number,
+    @Args('searchTerm', { type: () => String, nullable: true })
+    searchTerm: string,
   ) {
     const user = context.req.user;
 
-    return this.usersService.getAllOtherUsers(user, { skip, take });
+    return this.usersService.getAllOtherUsers(user, { skip, take }, searchTerm);
   }
 }

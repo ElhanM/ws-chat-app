@@ -47,7 +47,7 @@ type Query {
   chats: [Chat!]!
   chatsBetweenUsers(receiverId: String!, senderId: String!): [Chat!]!
   chatsWithLatestMessage(skip: Int, take: Int): [Chat!]!
-  otherUsers(skip: Int, take: Int): [User!]!
+  otherUsers(searchTerm: String, skip: Int, take: Int): [User!]!
   user(username: String!): User!
   users: [User!]!
 }
