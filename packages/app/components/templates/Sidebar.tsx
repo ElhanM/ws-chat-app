@@ -6,7 +6,7 @@ import { selectUserIds, setUsers } from "@/lib/features/users/usersSlice";
 import { useAppSelector } from "@/lib/hooks";
 import { UseQueryVariables } from "@/types/useQueryVariables";
 import { User } from "@ws-chat-app/shared";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Error from "../atoms/Error";
 import Loader from "../atoms/Loader";
@@ -15,6 +15,7 @@ import SidebarComponentWrapper from "../molecules/SidebarComponentWrapper";
 import UserChat from "../organisms/UserChat";
 import { setSelectedUser } from "@/lib/features/users/selectedUserSlice";
 import { setLoading } from "@/lib/features/queries/loadingSlice";
+import NewChatModal from "../organisms/NewChatModal";
 
 interface OtherUsers {
   otherUsers: Array<User>;
@@ -23,6 +24,12 @@ interface OtherUsers {
 const Sidebar = () => {
   const dispatch = useDispatch();
   const selectedUserId = useAppSelector((state) => state.selectedUser.userId);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   const { loading, error, data, fetchMore } = useQuery(GET_OTHER_USERS, {
     variables: { skip: 0, take: 15 },
@@ -69,12 +76,15 @@ const Sidebar = () => {
 
   return (
     <SidebarComponentWrapper noFlex>
+      <NewChatModal isModalOpen={isModalOpen} toggleModal={toggleModal} />
       {/* Sidebar Header */}
       <header className="p-4  flex justify-between items-center bg-black text-white">
         <h1 className="text-2xl font-semibold">
           {currentUser?.username ?? <Loader />}
         </h1>
-        <NewChatIcon />
+        <button onClick={() => toggleModal()}>
+          <NewChatIcon />
+        </button>
       </header>
 
       {/* UserChat List */}

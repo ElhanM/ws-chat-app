@@ -6,9 +6,10 @@ import { useDispatch } from "react-redux";
 import { setSelectedUser } from "@/lib/features/users/selectedUserSlice";
 interface UserChatProps {
   userId: string;
+  modal?: boolean;
 }
 
-const UserChat: React.FC<UserChatProps> = ({ userId }) => {
+const UserChat: React.FC<UserChatProps> = ({ userId, modal = false }) => {
   const dispatch = useDispatch();
   const selectedUserId = useAppSelector((state) => state.selectedUser.userId);
   const user = useAppSelector((state) => state.users.entities[userId]);
@@ -23,7 +24,7 @@ const UserChat: React.FC<UserChatProps> = ({ userId }) => {
     <div
       key={userId}
       className={`flex items-center mb-4 cursor-pointer hover:bg-chat-hover p-2 rounded-md
-    ${userId === selectedUserId && "bg-selected-chat hover:bg-selected-chat"}
+    ${userId === selectedUserId && !modal && "bg-selected-chat hover:bg-selected-chat"}
     `}
       onClick={() => dispatch(setSelectedUser(userId))}
     >

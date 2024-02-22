@@ -39,6 +39,8 @@ const useScrollFetch = <
   }, [dataLength, isFetching]);
 
   function handleScroll() {
+    // TODO: For modals we are missing a dependency
+    console.log("scrolling");
     const scrollableDiv = scrollableDivRef.current;
     if (!scrollableDiv) return;
 
