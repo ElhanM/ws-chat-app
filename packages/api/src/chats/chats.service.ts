@@ -59,12 +59,17 @@ export class ChatsService {
     // Prisma does not support this kind of query, so we have to use a raw query
     const chatPairs: { senderId: string; receiverId: string }[] = await this
       .prismaService.$queryRaw`
-      SELECT DISTINCT ON (LEAST("senderId", "receiverId"), GREATEST("senderId", "receiverId")) "senderId", "receiverId"
+    SELECT "senderId", "receiverId"
+    FROM (
+      SELECT "senderId", "receiverId", "createdAt",
+             ROW_NUMBER() OVER(PARTITION BY LEAST("senderId", "receiverId"), GREATEST("senderId", "receiverId") ORDER BY "createdAt" DESC) as rn
       FROM "chats"
       WHERE ("senderId" = ${userId} OR "receiverId" = ${userId}) AND "senderId" != "receiverId"
-      ORDER BY LEAST("senderId", "receiverId"), GREATEST("senderId", "receiverId"), "createdAt" DESC
-      LIMIT ${take} OFFSET ${skip}
-    `;
+    ) AS ordered_chats
+    WHERE rn = 1
+    ORDER BY "createdAt" DESC
+    LIMIT ${take} OFFSET ${skip}
+  `;
 
     console.log({ chatPairs });
 
@@ -85,6 +90,8 @@ export class ChatsService {
         }),
       ),
     );
+
+    console.log({ chats });
 
     return chats.sort(
       (a, b) =>
