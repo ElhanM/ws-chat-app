@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
+import { ChatsService } from '../src/chats/chats.service';
 import { PrismaService } from '../src/prisma.service';
 import { UsersService } from '../src/users/users.service';
-import { ChatsService } from '../src/chats/chats.service';
-import users from './seed-data/users';
 import chats from './seed-data/chats';
+import users from './seed-data/users';
 
 const prismaClient = new PrismaClient();
 const prismaService = new PrismaService();
@@ -11,8 +11,31 @@ const usersService = new UsersService(prismaService);
 const chatsService = new ChatsService(prismaService);
 
 async function main() {
-  await Promise.all(users.map((user) => usersService.create(user)));
-  await Promise.all(chats.map((chat) => chatsService.create(chat)));
+  const newUsers = await Promise.all(
+    users.map((user) => usersService.create(user)),
+  );
+
+  const elhanUser = newUsers.find((user) => user.username === 'elhan');
+
+  if (elhanUser) {
+    await Promise.all(
+      newUsers
+        .filter((user) => user.id !== elhanUser.id)
+        .map((user) =>
+          chatsService.create({
+            content: `Hello, ${user.username}!`,
+            senderId: elhanUser.id,
+            receiverId: user.id,
+          }),
+        ),
+    );
+  }
+
+  // so that test user is my latest chat
+  await new Promise((resolve) => setTimeout(resolve, 200)).then(
+    async () =>
+      await Promise.all(chats.map((chat) => chatsService.create(chat))),
+  );
 }
 
 main()

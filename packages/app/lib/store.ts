@@ -3,6 +3,7 @@ import currentUserReducer from "./features/users/currentUserSlice";
 import usersReducer from "./features/users/usersSlice";
 import selectedUserReducer from "./features/users/selectedUserSlice";
 import loadingReducer from "./features/queries/loadingSlice";
+import chatUsersReducer from "./features/users/chatUsersSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -11,6 +12,7 @@ export const makeStore = () => {
       users: usersReducer,
       selectedUser: selectedUserReducer,
       loading: loadingReducer,
+      chatUsers: chatUsersReducer,
     },
   });
 };

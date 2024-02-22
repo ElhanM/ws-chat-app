@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateChatInput } from './dto/create-chat.input';
 import { UpdateChatInput } from './dto/update-chat.input';
+import { Prisma } from '@prisma/client';
+import { LatestChat } from '@ws-chat-app/src';
 
 @Injectable()
 export class ChatsService {
@@ -48,25 +50,26 @@ export class ChatsService {
     });
   }
 
-  async getChatsWithLatestMessage(userId: string) {
+  async getChatsWithLatestMessage(
+    userId: string,
+    { skip, take }: { skip?: number; take?: number },
+  ) {
     // First, get all unique chat pairs involving the user
-    const chatPairs = await this.prismaService.chat.findMany({
-      where: {
-        OR: [{ senderId: userId }, { receiverId: userId }],
-      },
-      select: {
-        senderId: true,
-        receiverId: true,
-      },
-      distinct: ['senderId', 'receiverId'],
-      take: 10,
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+    // Also, we need to make sure that we do not allow multiple chats between the same pair of users
+    // Prisma does not support this kind of query, so we have to use a raw query
+    const chatPairs: { senderId: string; receiverId: string }[] = await this
+      .prismaService.$queryRaw`
+      SELECT DISTINCT ON (LEAST("senderId", "receiverId"), GREATEST("senderId", "receiverId")) "senderId", "receiverId"
+      FROM "chats"
+      WHERE ("senderId" = ${userId} OR "receiverId" = ${userId}) AND "senderId" != "receiverId"
+      ORDER BY LEAST("senderId", "receiverId"), GREATEST("senderId", "receiverId"), "createdAt" DESC
+      LIMIT ${take} OFFSET ${skip}
+    `;
+
+    console.log({ chatPairs });
 
     // Then, for each unique pair, get the latest chat
-    const chats = await Promise.all(
+    const chats: LatestChat[] = await Promise.all(
       chatPairs.map((pair) =>
         this.prismaService.chat.findFirst({
           where: {
@@ -83,8 +86,10 @@ export class ChatsService {
       ),
     );
 
-    console.log({ chats });
-
-    return chats;
+    return chats.sort(
+      (a, b) =>
+        b.createdAt.getTime() - a.createdAt.getTime() ||
+        a.id.localeCompare(b.id),
+    );
   }
 }

@@ -5,7 +5,7 @@ interface LoadingState {
 }
 
 const initialState: LoadingState = {
-  GET_OTHER_USERS: true,
+  GET_CHATS_WITH_LATEST_MESSAGE: true,
 };
 
 export const loadingSlice = createSlice({

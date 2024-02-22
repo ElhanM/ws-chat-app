@@ -20,7 +20,8 @@ const useScrollFetch = <
   ) => Promise<ApolloQueryResult<TData>>,
   dataLength: number,
   key: keyof TData,
-  getVariables: (dataLength: number) => TFetchVars
+  getVariables: (dataLength: number) => TFetchVars,
+  isModalOpen: boolean = false
 ) => {
   const [isFetching, setIsFetching] = useState(false);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
@@ -36,10 +37,9 @@ const useScrollFetch = <
       scrollableDiv.addEventListener("scroll", handleScroll);
       return () => scrollableDiv.removeEventListener("scroll", handleScroll);
     }
-  }, [dataLength, isFetching]);
+  }, [dataLength, isFetching, isModalOpen]);
 
   function handleScroll() {
-    // TODO: For modals we are missing a dependency
     console.log("scrolling");
     const scrollableDiv = scrollableDivRef.current;
     if (!scrollableDiv) return;

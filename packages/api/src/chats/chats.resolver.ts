@@ -1,8 +1,11 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ContextWithAuth } from 'src/types';
 import { ChatsService } from './chats.service';
-import { Chat } from './entities/chat.entity';
 import { CreateChatInput } from './dto/create-chat.input';
 import { UpdateChatInput } from './dto/update-chat.input';
+import { Chat } from './entities/chat.entity';
 
 @Resolver(() => Chat)
 export class ChatsResolver {
@@ -42,9 +45,14 @@ export class ChatsResolver {
   }
 
   @Query(() => [Chat], { name: 'chatsWithLatestMessage' })
+  @UseGuards(JwtAuthGuard)
   chatsWithLatestMessage(
-    @Args('userId', { type: () => String }) userId: string,
+    @Context() context: ContextWithAuth,
+    @Args('skip', { type: () => Int, nullable: true }) skip: number,
+    @Args('take', { type: () => Int, nullable: true }) take: number,
   ) {
-    return this.chatsService.getChatsWithLatestMessage(userId);
+    const { id: userId } = context.req.user;
+
+    return this.chatsService.getChatsWithLatestMessage(userId, { skip, take });
   }
 }

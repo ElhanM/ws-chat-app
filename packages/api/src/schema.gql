@@ -46,7 +46,7 @@ type Query {
   chat(id: String!): Chat!
   chats: [Chat!]!
   chatsBetweenUsers(receiverId: String!, senderId: String!): [Chat!]!
-  chatsWithLatestMessage(userId: String!): [Chat!]!
+  chatsWithLatestMessage(skip: Int, take: Int): [Chat!]!
   otherUsers(skip: Int, take: Int): [User!]!
   user(username: String!): User!
   users: [User!]!

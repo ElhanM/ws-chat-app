@@ -1,29 +1,33 @@
 "use client";
-import { GET_OTHER_USERS } from "@/graphql/getOtherUsers";
+import { GET_CHATS_WITH_LATEST_MESSAGE } from "@/graphql/queries/getChatsWithLatestMessage";
 import useQuery from "@/hooks/useCustomQuery";
 import useScrollFetch from "@/hooks/useScrollFetch";
-import { selectUserIds, setUsers } from "@/lib/features/users/usersSlice";
+import { setLoading } from "@/lib/features/queries/loadingSlice";
+import {
+  selectChatUserIds,
+  setChatUsers,
+} from "@/lib/features/users/chatUsersSlice";
+import { setSelectedUser } from "@/lib/features/users/selectedUserSlice";
 import { useAppSelector } from "@/lib/hooks";
 import { UseQueryVariables } from "@/types/useQueryVariables";
-import { User } from "@ws-chat-app/shared";
+import { LatestChat } from "@ws-chat-app/shared";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Error from "../atoms/Error";
 import Loader from "../atoms/Loader";
 import NewChatIcon from "../atoms/NewChatIcon";
 import SidebarComponentWrapper from "../molecules/SidebarComponentWrapper";
-import UserChat from "../organisms/UserChat";
-import { setSelectedUser } from "@/lib/features/users/selectedUserSlice";
-import { setLoading } from "@/lib/features/queries/loadingSlice";
 import NewChatModal from "../organisms/NewChatModal";
+import UserChat from "../organisms/UserChat";
 
-interface OtherUsers {
-  otherUsers: Array<User>;
+interface LatestChatData {
+  chatsWithLatestMessage: LatestChat[];
 }
 
 const Sidebar = () => {
   const dispatch = useDispatch();
   const selectedUserId = useAppSelector((state) => state.selectedUser.userId);
+  const { currentUser } = useAppSelector((state) => state.currentUser);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -31,35 +35,49 @@ const Sidebar = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const { loading, error, data, fetchMore } = useQuery(GET_OTHER_USERS, {
-    variables: { skip: 0, take: 15 },
-  });
+  const { loading, error, data, fetchMore } = useQuery<LatestChatData>(
+    GET_CHATS_WITH_LATEST_MESSAGE,
+    {
+      variables: { skip: 0, take: 15 },
+    }
+  );
 
   useEffect(() => {
-    dispatch(setLoading({ queryName: "GET_OTHER_USERS", isLoading: loading }));
+    dispatch(
+      setLoading({
+        queryName: "GET_CHATS_WITH_LATEST_MESSAGE",
+        isLoading: loading,
+      })
+    );
   }, [loading, dispatch]);
 
   useEffect(() => {
-    if (data?.otherUsers) {
-      dispatch(setUsers(data.otherUsers));
+    if (data?.chatsWithLatestMessage) {
+      dispatch(setChatUsers(data.chatsWithLatestMessage));
     }
 
-    if (!selectedUserId && data?.otherUsers.length) {
-      dispatch(setSelectedUser(data.otherUsers[0].id));
+    if (!selectedUserId && data?.chatsWithLatestMessage.length) {
+      const chat = data.chatsWithLatestMessage[0];
+      const userId =
+        chat.receiverId === currentUser?.id ? chat.senderId : chat.receiverId;
+      dispatch(setSelectedUser(userId));
     }
   }, [data, dispatch]);
 
-  const userIds = useAppSelector(selectUserIds);
+  const chatUserIds = useAppSelector(selectChatUserIds);
 
-  const { currentUser } = useAppSelector((state) => state.currentUser);
-
-  const { isFetching, setIsFetching, scrollableDivRef } = useScrollFetch<
-    OtherUsers,
+  const { isFetching, scrollableDivRef } = useScrollFetch<
+    LatestChatData,
     UseQueryVariables
-  >(fetchMore, data?.otherUsers.length, "otherUsers", (dataLength) => ({
-    skip: dataLength,
-    take: 15,
-  }));
+  >(
+    fetchMore,
+    data?.chatsWithLatestMessage.length ?? 0,
+    "chatsWithLatestMessage",
+    (dataLength) => ({
+      skip: dataLength,
+      take: 15,
+    })
+  );
 
   if (loading)
     return (
@@ -93,8 +111,8 @@ const Sidebar = () => {
         className="overflow-y-auto h-screen p-3 mb-9 pb-20 bg-black sidebar"
       >
         <h1 className="text-xl font-semibold mb-2">Messages</h1>
-        {userIds.map((userId) => (
-          <UserChat userId={userId} key={userId} />
+        {chatUserIds.map((chatUserId) => (
+          <UserChat chatUserId={chatUserId} key={chatUserId} />
         ))}
         {isFetching && <Loader />}
       </div>

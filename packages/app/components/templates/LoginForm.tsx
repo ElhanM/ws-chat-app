@@ -1,5 +1,5 @@
 "use client";
-import { LOGIN_MUTATION } from "@/graphql/loginMutation";
+import { LOGIN_MUTATION } from "@/graphql/mutations/loginMutation";
 import useMutation from "@/hooks/useCustomMutation";
 import {
   addTokenToLocalStorage,

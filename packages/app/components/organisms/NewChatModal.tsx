@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CloseIcon from "../atoms/CloseIcon";
 import { useDispatch } from "react-redux";
-import { GET_OTHER_USERS } from "@/graphql/getOtherUsers";
+import { GET_OTHER_USERS } from "@/graphql/queries/getOtherUsers";
 import useQuery from "@/hooks/useCustomQuery";
 import useScrollFetch from "@/hooks/useScrollFetch";
 import { setUsers } from "@/lib/features/users/usersSlice";
@@ -38,10 +38,16 @@ const NewChatModal = ({ isModalOpen, toggleModal }: Props) => {
   const { isFetching, scrollableDivRef } = useScrollFetch<
     OtherUsers,
     UseQueryVariables
-  >(fetchMore, data?.otherUsers.length, "otherUsers", (dataLength) => ({
-    skip: dataLength,
-    take: 15,
-  }));
+  >(
+    fetchMore,
+    data?.otherUsers.length,
+    "otherUsers",
+    (dataLength) => ({
+      skip: dataLength,
+      take: 15,
+    }),
+    isModalOpen
+  );
 
   if (!isModalOpen) {
     return null;
@@ -65,7 +71,7 @@ const NewChatModal = ({ isModalOpen, toggleModal }: Props) => {
           {loading && <Loader />}
           {error && <div>Error: {error.message}</div>}
           {userIds.map((userId) => (
-            <UserChat userId={userId} key={userId} modal/>
+            <UserChat userId={userId} key={userId} modal />
           ))}
           {isFetching && <Loader />}
         </div>

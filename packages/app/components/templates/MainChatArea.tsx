@@ -1,17 +1,14 @@
 "use client";
+import { GET_CHATS_BETWEEN_USERS } from "@/graphql/queries/getChatsBetweenUsers";
+import useQuery from "@/hooks/useCustomQuery";
 import { useAppSelector } from "@/lib/hooks";
-import { Message } from "@/types/message";
-import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
-import Loader from "../atoms/Loader";
-import io, { Socket } from "socket.io-client";
 import { getTokenFromLocalStorage } from "@/utils/localStorage";
+import { NewMessage } from "@ws-chat-app/shared";
+import { useEffect, useRef, useState } from "react";
+import io, { Socket } from "socket.io-client";
 import ChatInput from "../molecules/ChatInput";
 import { ChatHeader } from "../organisms/ChatHeader";
 import ChatMessages from "./ChatMessages";
-import { NewMessage } from "@ws-chat-app/shared";
-import { GET_CHATS_BETWEEN_USERS } from "@/graphql/getChatsBetweenUsers";
-import useQuery from "@/hooks/useCustomQuery";
 
 type Props = {};
 
@@ -27,8 +24,8 @@ const MainChatArea = ({}: Props) => {
   const { currentUser } = useAppSelector((state) => state.currentUser);
   const selectedUserId = useAppSelector((state) => state.selectedUser.userId)!;
   const user = useAppSelector((state) => state.users.entities[selectedUserId]);
-  const isGetOtherUsersLoading = useAppSelector(
-    (state) => state.loading.GET_OTHER_USERS
+  const isGetChatsWithLatestMessageLoading = useAppSelector(
+    (state) => state.loading.GET_CHATS_WITH_LATEST_MESSAGE
   );
 
   const { loading, error, data, refetch } = useQuery<ChatsData>(
@@ -97,7 +94,7 @@ const MainChatArea = ({}: Props) => {
     <>
       <div className="flex-1 flex flex-col bg-black">
         <ChatHeader
-          isGetOtherUsersLoading={isGetOtherUsersLoading}
+          isGetChatsWithLatestMessageLoading={isGetChatsWithLatestMessageLoading}
           user={user}
         />
         <ChatMessages

@@ -3,6 +3,11 @@ export type User = {
   username: string;
 };
 
+export type UserWithTimestamps = User & {
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type AuthUser = User & {
   accessToken: string;
 };
@@ -14,4 +19,9 @@ export type NewMessage = {
   content: string;
   senderId: string;
   receiverId: string;
+};
+
+export type LatestChat = NewMessage & {
+  sender: UserWithTimestamps;
+  receiver: UserWithTimestamps;
 };
