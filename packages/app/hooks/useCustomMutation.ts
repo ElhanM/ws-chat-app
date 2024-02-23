@@ -11,11 +11,12 @@ function useMutation<TData = any, TVariables = any>(
   options?: MutationHookOptions<TData, TVariables>
 ) {
   return originalUseMutation<TData, TVariables>(mutation, {
-    onError: (error) => {
-      toast.error("Error: " + error.message);
-    },
     ...options,
     client,
+    onError: (error) => {
+      toast.error("Error: " + error.message);
+      options?.onError?.(error);
+    },
   });
 }
 

@@ -5,6 +5,7 @@ import {
   useQuery as originalUseQuery,
 } from "@apollo/client";
 import client from "../apollo/apollo-client";
+import { toast } from "react-toastify";
 
 function useQuery<
   TData = any,
@@ -13,6 +14,11 @@ function useQuery<
   return originalUseQuery<TData, TVariables>(query, {
     ...options,
     client,
+    onError: (error) => {
+      console.log({ error });
+      toast.error("Error: " + error.message);
+      options?.onError?.(error);
+    },
   });
 }
 

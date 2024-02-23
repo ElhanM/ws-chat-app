@@ -10,6 +10,8 @@ import ChatInput from "../molecules/ChatInput";
 import { ChatHeader } from "../organisms/ChatHeader";
 import ChatMessages from "./ChatMessages";
 import { selectAllChatUsers } from "@/lib/features/users/chatUsersSlice";
+import { useDispatch } from "react-redux";
+import { triggerRefetch } from "@/lib/features/queries/refetchSlice";
 
 type Props = {};
 
@@ -21,6 +23,12 @@ const MainChatArea = ({}: Props) => {
   const [messages, setMessages] = useState<NewMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const socketRef = useRef<Socket | null>(null);
+
+  const dispatch = useDispatch();
+
+  const handleRefetch = () => {
+    dispatch(triggerRefetch({ queryName: "GET_CHATS_WITH_LATEST_MESSAGE" }));
+  };
 
   const { currentUser } = useAppSelector((state) => state.currentUser);
   const selectedUserId = useAppSelector((state) => state.selectedUser.userId)!;
@@ -45,7 +53,10 @@ const MainChatArea = ({}: Props) => {
   const { loading, error, data, refetch } = useQuery<ChatsData>(
     GET_CHATS_BETWEEN_USERS,
     {
-      variables: { senderId: currentUser?.id, receiverId: selectedUserId },
+      variables: {
+        senderId: currentUser?.id,
+        receiverId: selectedUserId ?? "",
+      },
     }
   );
 
@@ -78,6 +89,7 @@ const MainChatArea = ({}: Props) => {
         message.receiverId === selectedUserId
       ) {
         setMessages((messages) => [...messages, message]);
+        handleRefetch();
       }
     });
 
