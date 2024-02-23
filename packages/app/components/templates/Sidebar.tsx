@@ -128,7 +128,7 @@ const Sidebar = () => {
       {/* UserChat List */}
       <div
         ref={scrollableDivRef}
-        className="overflow-y-auto h-screen p-3 mb-9 pb-20 bg-black sidebar"
+        className="overflow-y-auto h-screen p-3 mb-9 pb-20 bg-black scrollbar"
       >
         <h1 className="text-xl font-semibold mb-2">Messages</h1>
         {chatUserIds.map((chatUserId) => (

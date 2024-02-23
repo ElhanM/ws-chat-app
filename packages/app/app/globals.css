@@ -36,7 +36,7 @@ body {
   .flex-center {
     @apply flex justify-center items-center;
   }
-  .sidebar {
+  .scrollbar {
     @apply scrollbar-thin scrollbar-thumb-gray-600 hover:scrollbar-thumb-gray-500;
   }
 }

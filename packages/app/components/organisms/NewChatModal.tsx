@@ -66,13 +66,16 @@ const NewChatModal = ({ isModalOpen, toggleModal }: Props) => {
   }
 
   return (
-    <div className="fixed z-10 inset-0 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-modal-bg text-white p-5 rounded-lg shadow-xl border border-pale w-[30vw]">
+    <div className="fixed z-10 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div
+        className="bg-modal-bg text-white p-5 rounded-lg shadow-xl border border-pale w-[80vw]
+      lg:w-[60vw] xl:w-[50vw]"
+      >
         <div className="flex-center justify-between mb-1">
           <h6 className="text-xl font-bold mb-4">New message</h6>
           <CloseIcon onClick={toggleModal} />
         </div>
-        <div className="h-10 w-100 -mx-5 border-y border-modal-border flex-center">
+        <div className="h-12 w-100 -mx-5 border-y border-modal-border flex-center">
           <p className="font-bold mx-3">To:</p>
           <input
             className="w-full h-full bg-modal-bg focus:outline-none"
@@ -81,7 +84,10 @@ const NewChatModal = ({ isModalOpen, toggleModal }: Props) => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div ref={scrollableDivRef} className="mt-2 h-[30vh] overflow-y-auto">
+        <div
+          ref={scrollableDivRef}
+          className="mt-2 h-[30vh] overflow-y-auto scrollbar"
+        >
           {loading && <Loader />}
           {error && <div>Error: {error.message}</div>}
           {userIds.map((userId) => (

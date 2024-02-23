@@ -23,7 +23,7 @@ const ChatMessages = ({ messages, loading }: Props) => {
 
   return (
     <div
-      className={`h-full overflow-y-auto p-4 sidebar
+      className={`h-full overflow-y-auto p-4 scrollbar
     ${loading && "flex items-center justify-center"}
     `}
       ref={containerRef}
