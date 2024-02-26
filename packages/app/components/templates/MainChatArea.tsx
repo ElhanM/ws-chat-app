@@ -54,7 +54,7 @@ const MainChatArea = ({}: Props) => {
     GET_CHATS_BETWEEN_USERS,
     {
       variables: {
-        senderId: currentUser?.id,
+        senderId: currentUser?.id ?? "",
         receiverId: selectedUserId ?? "",
       },
     }

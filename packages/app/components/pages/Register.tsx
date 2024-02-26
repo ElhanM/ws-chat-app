@@ -1,16 +1,16 @@
 "use client";
-import { LOGIN_MUTATION } from "@/graphql/mutations/loginMutation";
+import { REGISTER_MUTATION } from "@/graphql/mutations/registerMutation";
 import { LoginFormData } from "@/types/login";
-import { loginSchema } from "@/validation/login";
+import { registerSchema } from "@/validation/register";
 import Link from "next/link";
 import Form from "../templates/Form";
 import AuthWrapper from "../templates/AuthWrapper";
 
-const Login = () => {
+const Register = () => {
   return (
     <AuthWrapper>
       <h1 className="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">
-        Sign in to your account
+        Register an account
       </h1>
       <Form<LoginFormData>
         fields={[
@@ -27,22 +27,22 @@ const Login = () => {
             placeholder: "••••••••",
           },
         ]}
-        mutation={LOGIN_MUTATION}
-        validationSchema={loginSchema}
-        buttonText="Sign in"
-        mutationName="login"
+        mutation={REGISTER_MUTATION}
+        validationSchema={registerSchema}
+        buttonText="Register"
+        mutationName="signUp"
       />
       <p className="text-sm font-light text-gray-400 !mt-3">
-        Don&apos;t have an account yet?{" "}
+        Already have an account?{" "}
         <Link
-          href="/auth/register"
+          href="/auth/login"
           className="font-medium text-primary-500 hover:underline"
         >
-          Sign up
+          Login
         </Link>
       </p>
     </AuthWrapper>
   );
 };
 
-export default Login;
+export default Register;

@@ -131,9 +131,13 @@ const Sidebar = () => {
         className="overflow-y-auto h-screen p-3 mb-9 pb-20 bg-black scrollbar"
       >
         <h1 className="text-xl font-semibold mb-2">Messages</h1>
-        {chatUserIds.map((chatUserId) => (
-          <UserChat chatUserId={chatUserId} key={chatUserId} />
-        ))}
+        {chatUserIds.length ? (
+          chatUserIds.map((chatUserId) => (
+            <UserChat chatUserId={chatUserId} key={chatUserId} />
+          ))
+        ) : (
+          <p className="text-lg  font-semibold mb-2">No recent chats.</p>
+        )}
         {isFetching && <Loader />}
       </div>
     </SidebarComponentWrapper>

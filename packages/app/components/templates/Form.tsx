@@ -1,39 +1,52 @@
 "use client";
-import { LOGIN_MUTATION } from "@/graphql/mutations/loginMutation";
 import useMutation from "@/hooks/useCustomMutation";
 import {
   addTokenToLocalStorage,
   setCurrentUser,
 } from "@/lib/features/users/currentUserSlice";
 import { useAppDispatch } from "@/lib/hooks";
-import { LoginFormData } from "@/types/login";
-import { loginSchema } from "@/validation/login";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AuthUser } from "@ws-chat-app/shared";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Button from "../atoms/Button";
+import Loader from "../atoms/Loader";
 import ControlledInput from "../molecules/ControlledInput";
 import FormWrapper from "../organisms/FormWrapper";
-import Loader from "../atoms/Loader";
+import { DocumentNode } from "graphql";
+import * as yup from "yup";
 
-type Props = {};
+type Props<T> = {
+  fields: Array<{
+    name: string;
+    label: string;
+    type: string;
+    placeholder: string;
+  }>;
+  mutation: DocumentNode;
+  validationSchema: yup.AnyObjectSchema;
+  buttonText: string;
+  mutationName: string;
+};
 
-const LoginForm = (props: Props) => {
+function Form<T>({
+  fields,
+  mutation,
+  validationSchema,
+  buttonText,
+  mutationName,
+}: Props<T>) {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const methods = useForm<LoginFormData>({
+  const methods = useForm({
     mode: "onChange",
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(validationSchema),
   });
 
-  const [login, { data, loading, error }] = useMutation<{
-    login: AuthUser;
-  }>(LOGIN_MUTATION, {
+  const [mutate, { data, loading, error }] = useMutation(mutation, {
     onCompleted: (data) => {
-      dispatch(setCurrentUser(data.login));
-      dispatch(addTokenToLocalStorage(data.login.accessToken));
+      dispatch(setCurrentUser(data[mutationName]));
+      dispatch(addTokenToLocalStorage(data[mutationName].accessToken));
       // https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating#redirect-function
       /* 
         There are four ways to navigate between routes in Next.js:
@@ -46,8 +59,8 @@ const LoginForm = (props: Props) => {
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    login({ variables: { input: data } });
+  const onSubmit = (data: T) => {
+    mutate({ variables: { input: data } });
   };
 
   if (loading) {
@@ -59,22 +72,19 @@ const LoginForm = (props: Props) => {
   }
 
   return (
-    <FormWrapper<LoginFormData> methods={methods} onSubmit={onSubmit}>
-      <ControlledInput<LoginFormData>
-        name="username"
-        label="Username"
-        type="text"
-        placeholder="john.doe"
-      />
-      <ControlledInput<LoginFormData>
-        name="password"
-        label="Password"
-        type="password"
-        placeholder="••••••••"
-      />
-      <Button text="Sign in" type="submit" />
+    <FormWrapper methods={methods} onSubmit={onSubmit}>
+      {fields.map((field) => (
+        <ControlledInput
+          key={field.name}
+          name={field.name}
+          label={field.label}
+          type={field.type}
+          placeholder={field.placeholder}
+        />
+      ))}
+      <Button text={buttonText} type="submit" />
     </FormWrapper>
   );
-};
+}
 
-export default LoginForm;
+export default Form;
