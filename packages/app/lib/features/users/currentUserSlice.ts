@@ -13,7 +13,7 @@ const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
   reducers: {
-    setCurrentUser: (state, action: PayloadAction<User>) => {
+    setCurrentUser: (state, action: PayloadAction<User | undefined>) => {
       state.currentUser = action.payload;
     },
     addTokenToLocalStorage: (state, action: PayloadAction<string>) => {
