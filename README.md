@@ -2,11 +2,11 @@
 
 WS Chat App is a chat application built with NestJS, Next.js, and TypeScript.
 
-## Technial Details
+## Technical Overview
 
 This project is a monorepo managed with yarn workspaces.
 
-The backend of the application is built with NestJS and uses Prisma as an ORM. The frontend is built with Next.js and styled with Tailwind CSS, and uses Redux Toolkit for state management. The communication between the frontend and the backend is done using GraphQL, utilizing Apollo to consume the API. The database I decided to use is PostgresSQL, which runs inside of a docker container.
+The backend of the application is built with NestJS and uses Prisma as an ORM. The frontend is built with Next.js and styled with Tailwind CSS, and uses Redux Toolkit for state management. The communication between the frontend and the backend is done using GraphQL, utilizing Apollo to consume the API. The database I decided to use is PostgreSQL, which runs inside of a docker container.
 
 During development, I used a TDD (Test Driven Development) approach to build the app.
 
