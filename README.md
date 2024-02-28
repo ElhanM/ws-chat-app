@@ -1,6 +1,9 @@
-# WS Chat App
+# Real-Time Chat Application with Websockets
 
 WS Chat App is a chat application built with NestJS, Next.js, and TypeScript.
+
+## Video of the Project
+https://github.com/ElhanM/ws-chat-app/assets/103935603/b517fcb1-8f49-4241-9787-f9c6fca9d62d
 
 ## Technical Overview
 
