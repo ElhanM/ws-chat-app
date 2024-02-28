@@ -39,4 +39,3 @@ lerna-debug.log*
 
 # ignore .env file
 .env
-**/.env

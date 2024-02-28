@@ -5,5 +5,3 @@ build
 dist
 **/.dist
 .env
-**/.env
-**/.env**
