@@ -66,7 +66,7 @@ const NewChatModal = ({ isModalOpen, toggleModal }: Props) => {
   }
 
   return (
-    <div className="fixed z-10 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed z-30 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div
         className="bg-modal-bg text-white p-5 rounded-lg shadow-xl border border-pale w-[80vw]
       lg:w-[60vw] xl:w-[50vw]"

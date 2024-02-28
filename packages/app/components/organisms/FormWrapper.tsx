@@ -17,7 +17,7 @@ const FormWrapper = <TFormValues extends FieldValues>({
   return (
     <FormProvider {...methods}>
       <form
-        className="space-y-4 md:space-y-6"
+        className="space-y-4 md:space-y-6 w-full"
         onSubmit={methods.handleSubmit(onSubmit)}
       >
         {children}
