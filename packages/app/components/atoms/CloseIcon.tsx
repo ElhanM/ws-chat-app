@@ -1,10 +1,10 @@
 import React from "react";
 
 type Props = {
-  onClick: () => void;
+  onClick?: () => void;
 };
 
-const CloseIcon = ({ onClick }: Props) => {
+const CloseIcon = ({ onClick = () => {} }: Props) => {
   return (
     <div className="cursor-pointer pb-4" onClick={onClick}>
       <svg

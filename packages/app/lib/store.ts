@@ -5,6 +5,7 @@ import selectedUserReducer from "./features/users/selectedUserSlice";
 import loadingReducer from "./features/queries/loadingSlice";
 import chatUsersReducer from "./features/users/chatUsersSlice";
 import refetchReducer from "./features/queries/refetchSlice";
+import sidebarReducer from "./features/layout/sidebarSlice";
 
 export const makeStore = () => {
   return configureStore({
@@ -15,6 +16,7 @@ export const makeStore = () => {
       loading: loadingReducer,
       chatUsers: chatUsersReducer,
       refetch: refetchReducer,
+      sidebar: sidebarReducer,
     },
   });
 };

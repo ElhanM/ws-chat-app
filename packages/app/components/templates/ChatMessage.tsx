@@ -16,7 +16,7 @@ const ChatMessage = ({ message }: Props) => {
     <div
       className={`flex mb-4 cursor-pointer ${isIncoming ? "" : "flex-row-reverse"}`}
     >
-      <div className="w-9 h-9 rounded-full flex items-center justify-center mx-2">
+      <div className="w-9 h-9 rounded-full flex items-center justify-center mx-2 flex-shrink-0">
         <Image
           src={
             "https://placehold.co/200x/8eafff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"

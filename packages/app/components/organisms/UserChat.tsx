@@ -1,13 +1,10 @@
-import React from "react";
-import Image from "next/image";
-import { UserChat as UserChatType } from "@/types/userChat";
-import { useAppSelector } from "@/lib/hooks";
-import { useDispatch } from "react-redux";
+import { selectChatUserById } from "@/lib/features/users/chatUsersSlice";
 import { setSelectedUser } from "@/lib/features/users/selectedUserSlice";
-import {
-  selectAllChatUsers,
-  selectChatUserById,
-} from "@/lib/features/users/chatUsersSlice";
+import { useAppSelector } from "@/lib/hooks";
+import { UserChat as UserChatType } from "@/types/userChat";
+import Image from "next/image";
+import React from "react";
+import { useDispatch } from "react-redux";
 
 interface UserChatProps {
   userId?: string;
@@ -66,7 +63,7 @@ const UserChat: React.FC<UserChatProps> = ({
     `}
       onClick={() => dispatch(setSelectedUser(conditionalUserId))}
     >
-      <div className="w-12 h-12 bg-gray-300 rounded-full mr-3">
+      <div className="w-12 h-12 bg-gray-300 rounded-full mr-3 flex-shrink-0">
         <Image
           src={userChat.avatar}
           alt={userChat.username}
@@ -76,11 +73,11 @@ const UserChat: React.FC<UserChatProps> = ({
         />
       </div>
       <div className="flex-1 max-w-[80%]">
-        <h2 className="text-lg font-semibold overflow-hidden whitespace-nowrap w-[100%]">
+        <h2 className="text-lg font-semibold overflow-hidden whitespace-nowrap lg:w-[90%] md:w-[80%] w-[100%]">
           {userChat.username}
         </h2>
         {!userId ? (
-          <p className="text-pale-text overflow-hidden whitespace-nowrap w-[100%]">
+          <p className="text-pale-text overflow-hidden whitespace-nowrap lg:w-[90%] md:w-[80%] w-[100%]">
             {userChat.message}
           </p>
         ) : null}

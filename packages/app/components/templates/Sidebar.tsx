@@ -21,6 +21,8 @@ import NewChatModal from "../organisms/NewChatModal";
 import UserChat from "../organisms/UserChat";
 import { RootState } from "@/lib/store";
 import { triggerRefetch } from "@/lib/features/queries/refetchSlice";
+import CloseIcon from "../atoms/CloseIcon";
+import { toggleSidebar } from "@/lib/features/layout/sidebarSlice";
 
 interface LatestChatData {
   chatsWithLatestMessage: LatestChat[];
@@ -117,13 +119,21 @@ const Sidebar = () => {
       <NewChatModal isModalOpen={isModalOpen} toggleModal={toggleModal} />
       <SidebarComponentWrapper noFlex>
         {/* Sidebar Header */}
-        <header className="p-4  flex justify-between items-center bg-black text-white">
+        <header className="p-4 flex justify-between items-center bg-black text-white">
           <h1 className="text-2xl font-semibold">
             {currentUser?.username ?? <Loader />}
           </h1>
-          <button onClick={() => toggleModal()}>
-            <NewChatIcon />
-          </button>
+          <div className="flex-center">
+            <button onClick={() => toggleModal()}>
+              <NewChatIcon />
+            </button>
+            <button
+              onClick={() => dispatch(toggleSidebar(false))}
+              className="md:hidden md:ml-0 block ml-2 mt-4"
+            >
+              <CloseIcon />
+            </button>
+          </div>
         </header>
 
         {/* UserChat List */}
@@ -137,7 +147,7 @@ const Sidebar = () => {
               <UserChat chatUserId={chatUserId} key={chatUserId} />
             ))
           ) : (
-            <p className="text-lg  font-semibold mb-2">No recent chats.</p>
+            <p className="text-lg font-semibold mb-2">No recent chats.</p>
           )}
           {isFetching && <Loader />}
         </div>
