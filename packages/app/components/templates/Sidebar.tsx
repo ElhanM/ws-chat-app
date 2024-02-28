@@ -113,34 +113,36 @@ const Sidebar = () => {
     );
 
   return (
-    <SidebarComponentWrapper noFlex>
+    <>
       <NewChatModal isModalOpen={isModalOpen} toggleModal={toggleModal} />
-      {/* Sidebar Header */}
-      <header className="p-4  flex justify-between items-center bg-black text-white">
-        <h1 className="text-2xl font-semibold">
-          {currentUser?.username ?? <Loader />}
-        </h1>
-        <button onClick={() => toggleModal()}>
-          <NewChatIcon />
-        </button>
-      </header>
+      <SidebarComponentWrapper noFlex>
+        {/* Sidebar Header */}
+        <header className="p-4  flex justify-between items-center bg-black text-white">
+          <h1 className="text-2xl font-semibold">
+            {currentUser?.username ?? <Loader />}
+          </h1>
+          <button onClick={() => toggleModal()}>
+            <NewChatIcon />
+          </button>
+        </header>
 
-      {/* UserChat List */}
-      <div
-        ref={scrollableDivRef}
-        className="overflow-y-auto h-screen p-3 mb-9 pb-20 bg-black scrollbar"
-      >
-        <h1 className="text-xl font-semibold mb-2">Messages</h1>
-        {chatUserIds.length ? (
-          chatUserIds.map((chatUserId) => (
-            <UserChat chatUserId={chatUserId} key={chatUserId} />
-          ))
-        ) : (
-          <p className="text-lg  font-semibold mb-2">No recent chats.</p>
-        )}
-        {isFetching && <Loader />}
-      </div>
-    </SidebarComponentWrapper>
+        {/* UserChat List */}
+        <div
+          ref={scrollableDivRef}
+          className="overflow-y-auto h-screen p-3 mb-9 pb-20 bg-black scrollbar"
+        >
+          <h1 className="text-xl font-semibold mb-2">Messages</h1>
+          {chatUserIds.length ? (
+            chatUserIds.map((chatUserId) => (
+              <UserChat chatUserId={chatUserId} key={chatUserId} />
+            ))
+          ) : (
+            <p className="text-lg  font-semibold mb-2">No recent chats.</p>
+          )}
+          {isFetching && <Loader />}
+        </div>
+      </SidebarComponentWrapper>
+    </>
   );
 };
 

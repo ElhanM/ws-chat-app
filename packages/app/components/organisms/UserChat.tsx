@@ -75,9 +75,15 @@ const UserChat: React.FC<UserChatProps> = ({
           height={48}
         />
       </div>
-      <div className="flex-1">
-        <h2 className="text-lg font-semibold">{userChat.username}</h2>
-        {!userId ? <p className="text-pale-text">{userChat.message}</p> : null}
+      <div className="flex-1 max-w-[80%]">
+        <h2 className="text-lg font-semibold overflow-hidden whitespace-nowrap w-[100%]">
+          {userChat.username}
+        </h2>
+        {!userId ? (
+          <p className="text-pale-text overflow-hidden whitespace-nowrap w-[100%]">
+            {userChat.message}
+          </p>
+        ) : null}
       </div>
     </div>
   );

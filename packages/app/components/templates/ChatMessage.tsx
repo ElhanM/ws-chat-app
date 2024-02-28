@@ -30,7 +30,7 @@ const ChatMessage = ({ message }: Props) => {
       <div
         className={`flex max-w-96 rounded-lg p-3 gap-3 ${isIncoming ? "bg-incoming-message" : "bg-sent-message"}`}
       >
-        <p className="text-white">{message.content}</p>{" "}
+        <p className="text-white break-all hyphens-auto">{message.content}</p>{" "}
       </div>
     </div>
   );
