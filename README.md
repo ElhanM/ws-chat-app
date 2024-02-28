@@ -1,4 +1,4 @@
-# WS Chat App -> Under Development
+# WS Chat App
 
 WS Chat App is a chat application built with NestJS, Next.js, and TypeScript.
 
