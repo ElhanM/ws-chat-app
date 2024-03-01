@@ -32,8 +32,13 @@ export class ChatsService {
     return this.prismaService.chat.delete({ where: { id } });
   }
 
-  async chatsBetweenUsers(senderId: string, receiverId: string) {
-    return this.prismaService.chat.findMany({
+  async chatsBetweenUsers(
+    senderId: string,
+    receiverId: string,
+    pagination: Prisma.ChatFindManyArgs,
+  ) {
+    const messages = await this.prismaService.chat.findMany({
+      ...pagination,
       where: {
         OR: [
           {
@@ -45,9 +50,11 @@ export class ChatsService {
         ],
       },
       orderBy: {
-        createdAt: 'asc',
+        createdAt: 'desc',
       },
     });
+
+    return messages.reverse();
   }
 
   async getChatsWithLatestMessage(

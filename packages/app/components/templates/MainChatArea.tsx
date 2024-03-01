@@ -12,6 +12,11 @@ import ChatMessages from "./ChatMessages";
 import { selectAllChatUsers } from "@/lib/features/users/chatUsersSlice";
 import { useDispatch } from "react-redux";
 import { triggerRefetch } from "@/lib/features/queries/refetchSlice";
+import {
+  ChatsBetweenUsersQueryVariables,
+  UseQueryVariables,
+} from "@/types/useQueryVariables";
+import useScrollFetch from "@/hooks/useScrollFetch";
 
 type Props = {};
 
@@ -50,14 +55,36 @@ const MainChatArea = ({}: Props) => {
     (state) => state.loading.GET_CHATS_WITH_LATEST_MESSAGE
   );
 
-  const { loading, error, data, refetch } = useQuery<ChatsData>(
+  const { loading, error, data, fetchMore, refetch } = useQuery<ChatsData>(
     GET_CHATS_BETWEEN_USERS,
     {
       variables: {
         senderId: currentUser?.id ?? "",
         receiverId: selectedUserId ?? "",
+        skip: 0,
+        take: 15,
       },
     }
+  );
+
+  console.log({ data });
+
+  const { isFetching, setIsFetching, scrollableDivRef } = useScrollFetch<
+    ChatsData,
+    ChatsBetweenUsersQueryVariables
+  >(
+    fetchMore,
+    data?.chatsBetweenUsers.length ?? 0,
+    "chatsBetweenUsers",
+    (dataLength) => ({
+      senderId: currentUser?.id ?? "",
+      receiverId: selectedUserId ?? "",
+      skip: dataLength,
+      take: 15,
+    }),
+    false,
+    "up",
+    loading
   );
 
   useEffect(() => {
@@ -127,7 +154,10 @@ const MainChatArea = ({}: Props) => {
         />
         <ChatMessages
           messages={[...(data?.chatsBetweenUsers ?? []), ...messages]}
+          wsMessages={messages}
           loading={loading}
+          scrollableDivRef={scrollableDivRef}
+          isFetching={isFetching}
         />
         <ChatInput
           newMessage={newMessage}

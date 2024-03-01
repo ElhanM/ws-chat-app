@@ -21,13 +21,18 @@ const useScrollFetch = <
   dataLength: number,
   key: keyof TData,
   getVariables: (dataLength: number) => TFetchVars,
-  isModalOpen: boolean = false
+  isModalOpen: boolean = false,
+  scrollDirection: "up" | "down" = "down",
+  loading?: boolean
 ) => {
   const [isFetching, setIsFetching] = useState(false);
   const scrollableDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isFetching) return;
+    if (scrollDirection === "up") {
+      if (loading || loading === undefined) return;
+    }
     fetchMoreData();
   }, [isFetching]);
 
@@ -37,16 +42,19 @@ const useScrollFetch = <
       scrollableDiv.addEventListener("scroll", handleScroll);
       return () => scrollableDiv.removeEventListener("scroll", handleScroll);
     }
-  }, [dataLength, isFetching, isModalOpen]);
+  }, [dataLength, isFetching, isModalOpen, loading]);
 
   function handleScroll() {
     const scrollableDiv = scrollableDivRef.current;
     if (!scrollableDiv) return;
 
-    const { scrollHeight, scrollTop, clientHeight } = scrollableDiv;
-    const isNearBottom = scrollTop + clientHeight >= scrollHeight - 50;
+    const { scrollTop, clientHeight, scrollHeight } = scrollableDiv;
+    const isNearEdge =
+      scrollDirection === "down"
+        ? scrollTop + clientHeight >= scrollHeight - 50
+        : scrollTop <= 1;
 
-    if (isNearBottom && !isFetching) {
+    if (isNearEdge && !isFetching) {
       setIsFetching(true);
     }
   }
@@ -64,10 +72,17 @@ const useScrollFetch = <
           }
         ) => {
           if (!fetchMoreResult) return prev;
-          return {
-            ...prev,
-            [key]: [...prev[key], ...(fetchMoreResult?.[key] || [])],
-          };
+          if (scrollDirection === "down") {
+            return {
+              ...prev,
+              [key]: [...prev[key], ...(fetchMoreResult?.[key] || [])],
+            };
+          } else {
+            return {
+              ...fetchMoreResult,
+              [key]: [...fetchMoreResult[key], ...(prev[key] || [])],
+            };
+          }
         },
       });
       setIsFetching(false);

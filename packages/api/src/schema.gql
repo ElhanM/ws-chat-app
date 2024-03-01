@@ -45,7 +45,7 @@ type Mutation {
 type Query {
   chat(id: String!): Chat!
   chats: [Chat!]!
-  chatsBetweenUsers(receiverId: String!, senderId: String!): [Chat!]!
+  chatsBetweenUsers(receiverId: String!, senderId: String!, skip: Int, take: Int): [Chat!]!
   chatsWithLatestMessage(skip: Int, take: Int): [Chat!]!
   otherUsers(searchTerm: String, skip: Int, take: Int): [User!]!
   user(username: String!): User!
