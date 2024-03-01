@@ -51,8 +51,8 @@ const useScrollFetch = <
     const { scrollTop, clientHeight, scrollHeight } = scrollableDiv;
     const isNearEdge =
       scrollDirection === "down"
-        ? scrollTop + clientHeight >= scrollHeight - 50
-        : -scrollTop + clientHeight >= scrollHeight - 50;
+        ? scrollTop + clientHeight >= scrollHeight - 5
+        : -scrollTop + clientHeight >= scrollHeight - 5;
 
     if (isNearEdge && !isFetching) {
       setIsFetching(true);
