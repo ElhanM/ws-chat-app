@@ -54,7 +54,7 @@ export class ChatsService {
       },
     });
 
-    return messages.reverse();
+    return messages;
   }
 
   async getChatsWithLatestMessage(

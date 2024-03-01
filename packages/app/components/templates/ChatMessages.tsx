@@ -40,13 +40,14 @@ const ChatMessages = ({
 
   return (
     <div
-      className={`h-full overflow-y-auto p-4 scrollbar ${loading && "flex items-center justify-center"}`}
+      className={`h-full overflow-y-auto p-4 scrollbar ${loading && "flex items-center justify-center"}
+      flex flex-col-reverse`}
       ref={setRefs}
     >
-      {loading && <Loader />}
       {messages.map((message) => (
         <ChatMessage key={message.id} message={message} />
       ))}
+      {(loading || isFetching) && <Loader />}
     </div>
   );
 };

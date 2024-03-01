@@ -52,7 +52,7 @@ const useScrollFetch = <
     const isNearEdge =
       scrollDirection === "down"
         ? scrollTop + clientHeight >= scrollHeight - 50
-        : scrollTop <= 1;
+        : -scrollTop + clientHeight >= scrollHeight - 50;
 
     if (isNearEdge && !isFetching) {
       setIsFetching(true);
@@ -72,17 +72,10 @@ const useScrollFetch = <
           }
         ) => {
           if (!fetchMoreResult) return prev;
-          if (scrollDirection === "down") {
-            return {
-              ...prev,
-              [key]: [...prev[key], ...(fetchMoreResult?.[key] || [])],
-            };
-          } else {
-            return {
-              ...fetchMoreResult,
-              [key]: [...fetchMoreResult[key], ...(prev[key] || [])],
-            };
-          }
+          return {
+            ...prev,
+            [key]: [...prev[key], ...(fetchMoreResult?.[key] || [])],
+          };
         },
       });
       setIsFetching(false);
