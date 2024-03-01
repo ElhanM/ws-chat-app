@@ -77,7 +77,7 @@ const MainChatArea = ({}: Props) => {
     (dataLength) => ({
       senderId: currentUser?.id ?? "",
       receiverId: selectedUserId ?? "",
-      skip: dataLength,
+      skip: dataLength + messages.length,
       take: 15,
     }),
     false,
@@ -87,11 +87,13 @@ const MainChatArea = ({}: Props) => {
 
   useEffect(() => {
     if (!loading) {
+      setIsFetching(false);
       refetch();
     }
   }, [selectedUserId]);
 
   useEffect(() => {
+    setIsFetching(false);
     setMessages([]);
   }, [selectedUserId]);
 
@@ -151,7 +153,7 @@ const MainChatArea = ({}: Props) => {
           user={user}
         />
         <ChatMessages
-          messages={[...messages.reverse(), ...(data?.chatsBetweenUsers ?? [])]}
+          messages={[...messages, ...(data?.chatsBetweenUsers ?? [])]}
           wsMessages={messages}
           loading={loading}
           scrollableDivRef={scrollableDivRef}

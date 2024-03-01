@@ -5,6 +5,7 @@ import {
   ApolloQueryResult,
   OperationVariables,
 } from "@apollo/client";
+import { toast } from "react-toastify";
 
 interface FetchData {
   [key: string]: any;
@@ -29,7 +30,10 @@ const useScrollFetch = <
   const scrollableDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!isFetching) return;
+    if (!isFetching) {
+      setIsFetching(false);
+      return;
+    }
     if (scrollDirection === "up") {
       if (loading || loading === undefined) return;
     }
@@ -39,6 +43,7 @@ const useScrollFetch = <
   useEffect(() => {
     const scrollableDiv = scrollableDivRef.current;
     if (scrollableDiv) {
+      setIsFetching(false);
       scrollableDiv.addEventListener("scroll", handleScroll);
       return () => scrollableDiv.removeEventListener("scroll", handleScroll);
     }
@@ -54,7 +59,7 @@ const useScrollFetch = <
         ? scrollTop + clientHeight >= scrollHeight - 5
         : -scrollTop + clientHeight >= scrollHeight - 5;
 
-    if (isNearEdge && !isFetching) {
+    if (isNearEdge && !isFetching && scrollTop !== 0) {
       setIsFetching(true);
     }
   }
@@ -81,6 +86,7 @@ const useScrollFetch = <
       setIsFetching(false);
     } catch (error) {
       console.error("Error fetching more data:", error);
+      toast.error("Error fetching more data");
     }
   }
 
