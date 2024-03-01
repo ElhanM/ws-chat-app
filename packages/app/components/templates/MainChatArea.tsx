@@ -67,8 +67,6 @@ const MainChatArea = ({}: Props) => {
     }
   );
 
-  console.log({ data });
-
   const { isFetching, setIsFetching, scrollableDivRef } = useScrollFetch<
     ChatsData,
     ChatsBetweenUsersQueryVariables
