@@ -11,7 +11,7 @@ This project is a monorepo managed with yarn workspaces.
 
 The backend of the application is built with NestJS and uses Prisma as an ORM. The frontend is built with Next.js and styled with Tailwind CSS, and uses Redux Toolkit for state management. The communication between the frontend and the backend is done using GraphQL, utilizing Apollo to consume the API. The database I decided to use is PostgreSQL, which runs inside of a docker container.
 
-During development, I used a TDD (Test Driven Development) approach to build the app.
+During development, I used a TDD (Test-driven development) approach to build the app.
 
 The most interesting part of the project is the chat feature, that uses websockets to allow real-time communication between users. I used Socket.io to achieve this.
 
