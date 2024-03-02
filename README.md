@@ -1,4 +1,4 @@
-# Real-Time Chat Application with Websockets
+# Real-Time Chat Application with WebSockets
 
 WS Chat App is a chat application built with NestJS, Next.js, and TypeScript.
 
@@ -13,7 +13,7 @@ The backend of the application is built with NestJS and uses Prisma as an ORM. T
 
 During development, I used a TDD (Test-driven development) approach to build the app.
 
-The most interesting part of the project is the chat feature, that uses websockets to allow real-time communication between users. I used Socket.io to achieve this.
+The most interesting part of the project is the chat feature, that uses WebSockets to allow real-time communication between users. I used Socket.io to achieve this.
 
 ## Packages
 
