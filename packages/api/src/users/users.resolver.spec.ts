@@ -58,11 +58,15 @@ describe('UsersResolver', () => {
     // Mock the getAllOtherUsers method in the UsersService
     usersService.getAllOtherUsers = jest.fn().mockResolvedValue([]);
 
-    await resolver.getAllOtherUsers(context, mockSkip, mockTake);
+    await resolver.getAllOtherUsers(context, mockSkip, mockTake, null);
 
-    expect(usersService.getAllOtherUsers).toHaveBeenCalledWith(mockUser, {
-      skip: mockSkip,
-      take: mockTake,
-    });
+    expect(usersService.getAllOtherUsers).toHaveBeenCalledWith(
+      mockUser,
+      {
+        skip: mockSkip,
+        take: mockTake,
+      },
+      null,
+    );
   });
 });

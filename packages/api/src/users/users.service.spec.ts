@@ -84,7 +84,7 @@ describe('UsersService', () => {
     // Mock the findMany method in the PrismaService
     prismaService.user.findMany = jest.fn().mockResolvedValue([]);
 
-    await service.getAllOtherUsers(mockUser, mockPagination);
+    await service.getAllOtherUsers(mockUser, mockPagination, null);
 
     expect(prismaService.user.findMany).toHaveBeenCalledWith({
       ...mockPagination,
